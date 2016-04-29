@@ -1,0 +1,30 @@
+<div id="search" ng-controller='SearchController'>    
+
+	<div class="row searchContainer">
+		<div id="catalog-search" class="col-sm-5 col-centered">
+				<input class="typeahead" type="text" class="form-control" placeholder="Search for a class">
+		</div>
+	</div>
+	
+	<div id="classes">
+		<table class="table table-hover table-responsive table-bordered table-striped">
+			<thead>
+			  <tr>
+				<th>Class</th>
+				<th>Name</th>
+				<th>Credit</th>
+				<!-- <th>Description</th> -->
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr ng-repeat="class in data">
+				<td> <a href="#/chat/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
+				<td> <a href="#/chat/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>
+				<td> <a href="#/chat/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.credit}} </a> </td>	
+				<!-- <td> <a href="#/"> {{class.description}} </a> </td>	 -->
+			  </tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>

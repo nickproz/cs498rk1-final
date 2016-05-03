@@ -11,21 +11,41 @@
         <div id="signup">   
           <h1>Sign Up</h1>
           
-          <form action="/" method="post">
+          <!-- <form action="/" method="post"> -->
           
 			  <div class="top-row">
-				<div class="field-wrap"> <label> First Name<span class="req">*</span> </label> <input type="text" required autocomplete="off" /> </div>
-				<div class="field-wrap"> <label> Last Name<span class="req">*</span> </label> <input type="text" required autocomplete="off" /> </div>
+				<div class="field-wrap"> <label> First Name<span class="req">*</span> </label> <input ng-model="firstName" type="text" required autocomplete="off" /> </div>
+				<div class="field-wrap"> <label> Last Name<span class="req">*</span> </label> <input ng-model="lastName" type="text" required autocomplete="off" /> </div>
 			  </div>
 
-			  <div class="field-wrap"> <label> Username<span class="req">*</span> </label> <input type="username"required autocomplete="off"/> </div>
-			  <div class="field-wrap"> <label> Email Address<span class="req">*</span> </label> <input type="email"required autocomplete="off"/> </div>
-			  <div class="field-wrap"> <label> Set a Password<span class="req">*</span> </label> <input type="password"required autocomplete="off"/> </div>
-			  <!-- <div class="field-wrap"> <label> School Name<span class="req">*</span> </label> <input type="school"required autocomplete="off"/> </div>
-			  <div class="field-wrap"> <label> What Year Are You? </label> <input type="school" autocomplete="off"/> </div> -->
+			  <div class="field-wrap"> <label> Username<span class="req">*</span> </label> <input ng-model="userName" type="username"required autocomplete="off"/> </div>
+			  <div class="field-wrap"> <label> Email Address<span class="req">*</span> </label> <input ng-model="email" type="email"required autocomplete="off"/> </div>
+			  <div class="field-wrap"> <label> Set a Password<span class="req">*</span> </label> <input ng-model="password" type="password"required autocomplete="off"/> </div>
             
-			  <button type="submit" class="button button-block"/>Get Started</button>
-          </form>
+			  <button ng-click="addUser()" class="button button-block"/>Get Started</button> <!-- type="submit" -->
+          <!-- </form> -->
+		  
+		  <!-- <div id="userFail" style="display:none" class="alert callout center popup" data-closable>
+			  <p> {{userFail}} </p>
+			  <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+				<span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  
+		  <div id="userSuccess" style="display:none" class="success callout center popup" data-closable>
+			  <p> {{userSuccess}} </p>
+			  <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+				<span aria-hidden="true">&times;</span>
+			  </button>
+		  </div> -->
+		  <div style="display:none" id="userSuccess" class="alert alert-success">
+			  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Success!</strong> {{userSuccess}}
+		  </div>
+		   <div style="display:none" id="userFail" class="alert alert-danger">
+			  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Failed!</strong> {{userFail}}
+		  </div>
         </div>
       </div>
 	</div>

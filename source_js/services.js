@@ -2,10 +2,9 @@ var mp4Services = angular.module('mp4Services', []);
 
 // Service for our User API requests
 mp4Services.factory('Users', function($http, $window) {
-	
-	// Encode our request as url encoded parameters and our server url variable
-	//var config = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }; 
-	var baseUrl = $window.sessionStorage.baseurl + '/api/users/';
+
+	//var baseUrl = $window.sessionStorage.baseurl + '/api/users/';
+	var baseUrl = 'http://localhost:4000/api/users/';
 	
 	// Route to correct HTTP API call
     return {
@@ -31,32 +30,31 @@ mp4Services.factory('Users', function($http, $window) {
     }
 });
 
-// Service for our Task API requests
-mp4Services.factory('Tasks', function($http, $window) {
-	
-	// Encode our request as url encoded parameters and our server url variable
-	//var config = { headers: {'Content-Type': 'application/x-www-form-urlencoded'} }; 
-	var baseUrl = $window.sessionStorage.baseurl + '/api/tasks/';
+// Service for our Class API requests
+mp4Services.factory('Classes', function($http, $window) {
+
+	//var baseUrl = $window.sessionStorage.baseurl + '/api/classes/';
+	var baseUrl = 'http://localhost:4000/api/classes/';
 	
 	// Route to correct HTTP API call
 	return {
 		
-		createTask : function(task) {
-			return $http.post(baseUrl, task);
+		createClass : function(newClass) {
+			return $http.post(baseUrl, newClass);
 		},
-		getTasks : function (query) {
+		getClasses : function (query) {
 			if(query === undefined || query === "undefined")
 				return $http.get(baseUrl);
 			else
 				return $http.get(baseUrl + query);
 		},
-		getTask : function(id) {
+		getClass : function(id) {
 			return $http.get(baseUrl + id);
 		},
-		updateTask : function(task, id) {
+		updateClass : function(newClass, id) {
 			return $http.put(baseUrl + id, task);
 		},
-		deleteTask : function(id) {
+		deleteClass : function(id) {
 			return $http.delete(baseUrl + id);
 		}
 	}

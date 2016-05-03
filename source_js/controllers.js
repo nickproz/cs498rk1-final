@@ -1,7 +1,6 @@
 var mp4Controllers = angular.module('mp4Controllers', []);
-var id;
 
-mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
+mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', 'Users', function($scope, $http, $window, Users) {
 
 	// Form "placeholders"
 	$('.form').find('input, textarea').on('keyup blur focus', function (e) { 
@@ -28,6 +27,35 @@ mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', fu
 				}
 		}
 	});
+	
+	// Add our user to the database
+	$scope.addUser = function() {
+		
+		$scope.user = {};
+	
+		$scope.user.firstName = $scope.firstName;
+		$scope.user.lastName = $scope.lastName;
+		$scope.user.userName = $scope.userName;
+		$scope.user.email = $scope.email;
+		$scope.user.password = $scope.password;
+		
+		if($scope.user.firstName === "undefined" || $scope.user.lastName === "undefined" || $scope.user.userName === "undefined"|| $scope.user.email === "undefined"|| $scope.user.firstName === undefined || $scope.user.lastName === undefined || $scope.user.userName === undefined || $scope.user.email === undefined || $scope.user.password === undefined) {
+			$scope.userFail = "Please fill out all fields with valid characters.";
+			$('#userSuccess').hide();
+			$('#userFail').show();
+			return;
+		}
+		
+		Users.createUser($scope.user).success(function(data) {
+			$scope.userSuccess = data.message;
+			$('#userSuccess').show();
+			$('#userFail').hide();
+		}).error(function(data) {
+			$scope.userFail = data.message;
+			$('#userSuccess').hide();
+			$('#userFail').show();
+		});
+	}
 	
 	// Navbar update
 	$('.navbar li').removeClass('active');
@@ -69,7 +97,7 @@ mp4Controllers.controller('LoginController', ['$scope' , '$http', '$window', fun
 	
 }]);
 
-mp4Controllers.controller('ChatController', ['$scope' , '$http', '$window', '$routeParams', function($scope, $http, $window, $routeParams) {
+mp4Controllers.controller('ChatController', ['$scope' , '$http', '$window', '$routeParams', 'Classes', function($scope, $http, $window, $routeParams, Classes) {
 	
 	// Navbar update
 	$('.navbar li').removeClass('active');
@@ -78,9 +106,9 @@ mp4Controllers.controller('ChatController', ['$scope' , '$http', '$window', '$ro
 	$scope.id = $routeParams.id;	
 	
 	// Get class data, add courses to search bar typeahead
-	$http.get('./data/courses.json').success(function(data) {
-		
-		$scope.class = data[$scope.id - 1]
+	//$http.get('./data/courses.json')
+	Classes.getClass($scope.id).success(function(data) {
+		$scope.class = data.data;
 		
 	}).error(function (err) {
 		console.log(err);
@@ -88,7 +116,7 @@ mp4Controllers.controller('ChatController', ['$scope' , '$http', '$window', '$ro
 	
 }]);
 
-mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
+mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', 'Classes', function($scope, $http, $window, Classes) {
 	
 	// Navbar update
 	$('.navbar li').removeClass('active');
@@ -112,10 +140,15 @@ mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', fu
 	};
 
 	// Get class data, add courses to search bar typeahead
-	$http.get('./data/courses.json').success(function(data) {
+	//$http.get('./data/courses.json')
+	Classes.getClasses().success(function(data) {
+		var data = data.data;
+		
 		var classes = [];
-		for(var i = 0; i < data.length; i++)
+		for(var i = 0; i < data.length; i++) {
+			//Classes.createClass(data[i]);
 			classes.push(data[i].identifier);
+		}
 		
 		$scope.classes = classes;
 		$scope.data = data;
@@ -133,5 +166,4 @@ mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', fu
 	}).error(function (err) {
 		console.log(err);
 	})
-	
 }]);

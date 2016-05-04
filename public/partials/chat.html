@@ -1,0 +1,91 @@
+<div id="chat" ng-controller='ChatController'>    
+
+	<div class="chatroom clearfix">
+	  <div class="people-list" id="people-list">
+		<div class="search">
+		  <input type="text" placeholder="search" />
+		  <i class="fa fa-search"></i>
+		</div>
+		<ul class="list">
+		  <li class="clearfix">
+			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
+			<div class="about">
+			  <div class="name">James Johnson</div>
+			  <div class="status">
+				<i class="fa fa-circle online"></i> online
+			  </div>
+			</div>
+		  </li>
+
+		  <li class="clearfix">
+			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
+			<div class="about">
+			  <div class="name">Alex Davidson</div>
+			  <div class="status">
+				<i class="fa fa-circle offline"></i> left 7 mins ago
+			  </div>
+			</div>
+		  </li>
+
+		  <li class="clearfix">
+			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
+			<div class="about">
+			  <div class="name">Harold Hunt</div>
+			  <div class="status">
+				<i class="fa f-a-circle online"></i> online
+			  </div>
+			</div>
+		  </li>
+		</ul>
+	  </div>
+
+	  <div class="chat">
+		<div class="chat-header clearfix">
+		  <img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
+		  
+		  <div class="chat-about">
+			<div class="chat-with">{{class.identifier}}</div>
+			<div class="chat-num-messages">2 messages</div>
+		  </div>
+		  <i class="fa fa-star"></i>
+		</div> <!-- end chat-header -->
+		
+		<div class="chat-history">
+		  <ul>
+			<li class="clearfix">
+			  <div class="message-data align-right">
+				<span class="message-data-time" >10:10 AM, Today</span> &nbsp; &nbsp;
+				<span class="message-data-name" >James</span> <i class="fa fa-circle me"></i>
+				
+			  </div>
+			  <div class="message other-message float-right">
+				Hi Alex, how are you? How is the project coming along?
+			  </div>
+			</li>
+			
+			<li>
+			  <div class="message-data">
+				<span class="message-data-name"><i class="fa fa-circle online"></i> Alex</span>
+				<span class="message-data-time">10:12 AM, Today</span>
+			  </div>
+			  <div class="message my-message">
+				Are we meeting today? Project has been already finished and I have results to show you.
+			  </div>
+			</li>
+		  </ul>
+		</div>
+
+	   <div class="chat-message clearfix">
+		  <textarea placeholder="Type your message" rows="4"></textarea>
+				  
+		  <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+		  <i class="fa fa-file-image-o"></i>
+		  
+		  <button>Send</button>
+
+		</div>
+		  
+	  </div>
+	</div>
+	
+</div>

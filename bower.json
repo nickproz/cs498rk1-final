@@ -1,12 +1,12 @@
 {
-  "name": "Final-Project",
-  "version": "1.0",
-  "homepage": "https://github.com/nickproz/cs498rk1-final",
+  "name": "final-project",
+  "version": "0.0.0",
+  "homepage": "#",
   "authors": [
+    "Nick Prozorovsky <prozoro2@illinois.edu>",
     "Vyshnav Kakivaya <kakivay2@illinois.edu>",
-    "Nick Prozorovsky <prozoro2@illinois.com>"
-    "Xiaocheng Yuan <xiao3@illinois.com>"
-    "Chaoqun Liu <liu23@illinois.com>"
+    "Xiaocheng Yuan <xyuan12@illinois.edu>",
+    "Chaoqun Liu <cliu68@illinois.edu>"
   ],
   "ignore": [
     "**/.*",
@@ -22,7 +22,6 @@
     "angular-route": "",
     "json3": "",
     "jquery": "",
-    "bootstrap-css": "",
     "es5-shim": "",
     "angular-resource": "",
     "angular-cookies": "",

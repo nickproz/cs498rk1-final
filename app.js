@@ -60,7 +60,7 @@ homeRoute.get(function(req, res) {
   res.json({ message: 'Hello World!' });
 });
 
-// CREATE A NEW USER
+// Create a new user
 var usersRoute = router.route('/users');
 
 usersRoute.post(function(req, res) {
@@ -73,7 +73,9 @@ usersRoute.post(function(req, res) {
     user.lastName = data.lastName;
     user.userName = data.userName;
     user.email = data.email;
-    user.password = data.password;
+
+    user.setPassword(data.password)
+
     user.classes = [];
     user.dateCreated = new Date();
 
@@ -92,7 +94,8 @@ usersRoute.post(function(req, res) {
                 if (err)
                     return res.status(500).send({ 'message': 'Failed to save user to the database.', 'data': [] });
                 else
-                    return res.status(201).send({ 'message': 'User successfully created!', 'data': user });
+                    return res.json({token: user.generateJWT()})
+                    // return res.status(201).send({ 'message': 'User successfully created!', 'data': user });
             });
         }
         else
@@ -100,7 +103,7 @@ usersRoute.post(function(req, res) {
     });
 });
 
-// GET ALL USERS
+// Get all users
 usersRoute.get(function(req, res) {
 
     // Get all query parameters
@@ -133,7 +136,7 @@ usersRoute.get(function(req, res) {
 
 var userDetailsRoute = router.route('/users/:id');
 
-// GET A SINGLE USER
+// Get a single user
 userDetailsRoute.get(function(req, res) {
 
     var id = req.params.id;
@@ -148,7 +151,7 @@ userDetailsRoute.get(function(req, res) {
 });
 
 
-// UPDATE A USER
+// Update a user
 userDetailsRoute.put(function(req, res) {
 
     var id = req.params.id;
@@ -158,9 +161,13 @@ userDetailsRoute.put(function(req, res) {
         return res.status(500).send({ 'message': 'Please fill out all fields with valid characters.', 'data': [] });
     }
 
+    // Use Passport method to set a secure password.
+    User.setPassword(user.password)
+
     User.update(
         { '_id': id },
-        { $set: {"firstName": user.firstName, "lastName": user.lastName, "userName": user.userName, "email": user.email, "password": user.password} },
+        { $set: {"firstName": user.firstName, "lastName": user.lastName, "userName": user.userName, "email": user.email} },
+
         function(err, person) {
             if(err)
                 return res.status(400).send({ 'message': 'User not found.', 'data': [] });
@@ -176,7 +183,7 @@ userDetailsRoute.put(function(req, res) {
     );
 });
 
-// REMOVE A USER
+// Remove a user
 userDetailsRoute.delete(function(req, res) {
 
     var id = req.params.id;
@@ -197,7 +204,7 @@ userDetailsRoute.delete(function(req, res) {
     });
 });
 
-// CREATE A NEW CLASS
+// Create a new class
 var classesRoute = router.route('/classes');
 
 classesRoute.post(function(req, res) {
@@ -233,7 +240,7 @@ classesRoute.post(function(req, res) {
     });
 });
 
-// GET ALL CLASSES
+// Get all classes
 classesRoute.get(function(req, res) {
 
     // Get all query parameters
@@ -266,7 +273,7 @@ classesRoute.get(function(req, res) {
 
 var classDetailsRoute = router.route('/classes/:id');
 
-// GET A SINGLE CLASS
+// Get a single class
 classDetailsRoute.get(function(req, res) {
 
     var id = req.params.id;
@@ -280,7 +287,7 @@ classDetailsRoute.get(function(req, res) {
     });
 });
 
-// UPDATE A CLASS
+// Update a class
 classDetailsRoute.put(function(req, res) {
 
     var id = req.params.id;
@@ -298,7 +305,7 @@ classDetailsRoute.put(function(req, res) {
     );
 });
 
-// REMOVE A CLASS
+// Remove a class
 classDetailsRoute.delete(function(req, res) {
 
     var id = req.params.id;

@@ -10,7 +10,7 @@ var UserSchema = mongoose.Schema({
     userName: {type: String, lowercase: true, unique: true},
     email: {type: String, unique: true, required: true},
     hashPass: String,
-    salt: String
+    salt: String,
     // password: String,
     classes: [String],
     dateCreated: Date

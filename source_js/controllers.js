@@ -1,9 +1,9 @@
-var mp4Controllers = angular.module('mp4Controllers', []);
+var finalControllers = angular.module('finalControllers', []);
 
-mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', 'Users', function($scope, $http, $window, Users) {
+finalControllers.controller('SignUpController', ['$scope' , '$http', '$window', 'Users', function($scope, $http, $window, Users) {
 
 	// Form "placeholders"
-	$('.form').find('input, textarea').on('keyup blur focus', function (e) { 
+	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
 	  var $this = $(this),
 		  label = $this.prev('label');
 		  if (e.type === 'keyup') {
@@ -14,38 +14,38 @@ mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', 'U
 			}
 		} else if (e.type === 'blur') {
 			if( $this.val() === '' ) {
-				label.removeClass('active highlight'); 
+				label.removeClass('active highlight');
 				} else {
-				label.removeClass('highlight');   
-				}   
+				label.removeClass('highlight');
+				}
 		} else if (e.type === 'focus') {
 		  if( $this.val() === '' ) {
-				label.removeClass('highlight'); 
-				} 
+				label.removeClass('highlight');
+				}
 		  else if( $this.val() !== '' ) {
 				label.addClass('highlight');
 				}
 		}
 	});
-	
+
 	// Add our user to the database
 	$scope.addUser = function() {
-		
+
 		$scope.user = {};
-	
+
 		$scope.user.firstName = $scope.firstName;
 		$scope.user.lastName = $scope.lastName;
 		$scope.user.userName = $scope.userName;
 		$scope.user.email = $scope.email;
 		$scope.user.password = $scope.password;
-		
+
 		if($scope.user.firstName === "undefined" || $scope.user.lastName === "undefined" || $scope.user.userName === "undefined"|| $scope.user.email === "undefined"|| $scope.user.firstName === undefined || $scope.user.lastName === undefined || $scope.user.userName === undefined || $scope.user.email === undefined || $scope.user.password === undefined) {
 			$scope.userFail = "Please fill out all fields with valid characters.";
 			$('#userSuccess').hide();
 			$('#userFail').show();
 			return;
 		}
-		
+
 		Users.createUser($scope.user).success(function(data) {
 			$scope.userSuccess = data.message;
 			$('#userSuccess').show();
@@ -56,17 +56,17 @@ mp4Controllers.controller('SignUpController', ['$scope' , '$http', '$window', 'U
 			$('#userFail').show();
 		});
 	}
-	
+
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navSignup').addClass('active');
 
 }]);
 
-mp4Controllers.controller('LoginController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
+finalControllers.controller('LoginController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
 
 	// Form "placeholders"
-	$('.form').find('input, textarea').on('keyup blur focus', function (e) { 
+	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
 	  var $this = $(this),
 		  label = $this.prev('label');
 		  if (e.type === 'keyup') {
@@ -77,14 +77,14 @@ mp4Controllers.controller('LoginController', ['$scope' , '$http', '$window', fun
 			}
 		} else if (e.type === 'blur') {
 			if( $this.val() === '' ) {
-				label.removeClass('active highlight'); 
+				label.removeClass('active highlight');
 				} else {
-				label.removeClass('highlight');   
-				}   
+				label.removeClass('highlight');
+				}
 		} else if (e.type === 'focus') {
 		  if( $this.val() === '' ) {
-				label.removeClass('highlight'); 
-				} 
+				label.removeClass('highlight');
+				}
 		  else if( $this.val() !== '' ) {
 				label.addClass('highlight');
 				}
@@ -94,34 +94,34 @@ mp4Controllers.controller('LoginController', ['$scope' , '$http', '$window', fun
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navLogin').addClass('active');
-	
+
 }]);
 
-mp4Controllers.controller('ChatController', ['$scope' , '$http', '$window', '$routeParams', 'Classes', function($scope, $http, $window, $routeParams, Classes) {
-	
+finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$routeParams', 'Classes', function($scope, $http, $window, $routeParams, Classes) {
+
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navChat').addClass('active');
-	
-	$scope.id = $routeParams.id;	
-	
+
+	$scope.id = $routeParams.id;
+
 	// Get class data, add courses to search bar typeahead
 	//$http.get('./data/courses.json')
 	Classes.getClass($scope.id).success(function(data) {
 		$scope.class = data.data;
-		
+
 	}).error(function (err) {
 		console.log(err);
 	})
-	
+
 }]);
 
-mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', 'Classes', function($scope, $http, $window, Classes) {
-	
+finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 'Classes', function($scope, $http, $window, Classes) {
+
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navSearch').addClass('active');
-	
+
 	// Substring matcher for search bar
 	var substringMatcher = function(strs) {
 	  return function findMatches(q, cb) {
@@ -143,16 +143,16 @@ mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', 'C
 	//$http.get('./data/courses.json')
 	Classes.getClasses().success(function(data) {
 		var data = data.data;
-		
+
 		var classes = [];
 		for(var i = 0; i < data.length; i++) {
 			//Classes.createClass(data[i]);
 			classes.push(data[i].identifier);
 		}
-		
+
 		$scope.classes = classes;
 		$scope.data = data;
-		
+
 		$('#catalog-search .typeahead').typeahead({
 		  hint: true,
 		  highlight: true,
@@ -162,7 +162,7 @@ mp4Controllers.controller('SearchController', ['$scope' , '$http', '$window', 'C
 		  name: 'classes',
 		  source: substringMatcher(classes)
 		});
-		
+
 	}).error(function (err) {
 		console.log(err);
 	})

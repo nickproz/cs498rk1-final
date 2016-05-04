@@ -63,6 +63,28 @@ finalControllers.controller('SignUpController', ['$scope' , '$http', '$window', 
 
 }]);
 
+// Depends of UI-Routing
+finalControllers.controller('AuthCtrl', ['$scope', '$state', 'auth',
+function($scope, $state, auth) {
+	$scope.user = {};
+
+	$scope.register = function() {
+		auth.register($scope.user).error(function(error) {
+			$scope.error = error;
+		}).then(function() {
+			$state.go('search');
+		});
+	};
+
+	$scope.logIn = function() {
+		auth.logIn($scope.user).error(function(error) {
+			$scope.error = error;
+		}).then(function() {
+			$state.go('search');
+		});
+	};
+}]);
+
 finalControllers.controller('LoginController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
 
 	// Form "placeholders"

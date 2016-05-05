@@ -6,21 +6,25 @@
 		</div>
 	</div>
 	
-	<div id="classes">
-		<table class="table table-hover table-responsive table-bordered table-striped">
-			<thead>
-			  <tr>
-				<th>Class</th>
-				<th>Name</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr ng-repeat="class in data | filter:query">
-				<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
-				<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>	
-			  </tr>
-			</tbody>
-		</table>
+	<div id="classes" class="row">
+		<div class="col-sm-7 col-centered">
+			<table class="table table-hover table-responsive table-bordered table-striped">
+				<thead>
+					<col width="25%">
+					<col width="75%">
+				  <tr>
+					<th>Class</th>
+					<th>Name</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr ng-repeat="class in data | filter:query">
+					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
+					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>	
+				  </tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	
 </div>

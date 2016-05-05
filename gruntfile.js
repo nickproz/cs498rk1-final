@@ -74,5 +74,5 @@ module.exports = function(grunt) {
       }
   }
   }) //initConfig
-  grunt.registerTask('default', ['express:dev', 'watch', 'uglify']);
+  grunt.registerTask('default', ['clean', 'express:dev', 'watch', 'uglify']);
 } //exports

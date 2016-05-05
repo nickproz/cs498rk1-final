@@ -137,6 +137,7 @@ finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$
 
 }]);
 
+
 finalControllers.controller('SearchController', ['$scope' , '$http', '$window', '$route', 'Classes', function($scope, $http, $window, $route, Classes) {
 	
 	// Navbar update

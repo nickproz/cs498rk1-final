@@ -178,15 +178,15 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		$scope.classes = classes;
 		$scope.data = data;
 		
-		$('#catalog-search .typeahead').typeahead({
-		  hint: true,
-		  highlight: true,
-		  minLength: 1
-		},
-		{
-		  name: 'classes',
-		  source: $scope.substringMatcher(classes)
-		});
+		// $('#catalog-search .typeahead').typeahead({
+		//   hint: true,
+		//   highlight: true,
+		//   minLength: 1
+		// },
+		// {
+		//   name: 'classes',
+		//   source: $scope.substringMatcher(classes)
+		// });
 
 	}).error(function (err) {
 		console.log(err);

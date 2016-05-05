@@ -131,21 +131,27 @@ finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$
 	//$http.get('./data/courses.json')
 	Classes.getClass($scope.id).success(function(data) {
 		$scope.class = data.data;
-
 	}).error(function (err) {
 		console.log(err);
 	})
 
 }]);
 
-finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 'Classes', function($scope, $http, $window, Classes) {
-
+finalControllers.controller('SearchController', ['$scope' , '$http', '$window', '$route', 'Classes', function($scope, $http, $window, $route, Classes) {
+	
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navSearch').addClass('active');
-
+	
+	$scope.update = function() 
+	{
+		return;
+	}
+	
+	$scope.nameFilter = {'identifier': ""};
+	
 	// Substring matcher for search bar
-	var substringMatcher = function(strs) {
+	$scope.substringMatcher = function(strs) {
 	  return function findMatches(q, cb) {
 
 		var matches = [];
@@ -157,6 +163,7 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		  }
 		});
 
+		$scope.nameFilter.identifier = q.toUpperCase();
 		cb(matches);
 	  };
 	};
@@ -175,6 +182,8 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		$scope.classes = classes;
 		$scope.data = data;
 
+		$scope.filters = data;
+		
 		$('#catalog-search .typeahead').typeahead({
 		  hint: true,
 		  highlight: true,
@@ -182,10 +191,28 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		},
 		{
 		  name: 'classes',
-		  source: substringMatcher(classes)
+		  source: $scope.substringMatcher(classes)
 		});
 
 	}).error(function (err) {
 		console.log(err);
 	})
+}]);
+
+finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Classes', function($scope, $http, $window, $route, $routeParams, Classes) {
+	
+	// Navbar update
+	$('.navbar li').removeClass('active');
+	
+	$scope.id = $routeParams.id;
+	$scope.classRoute = $routeParams.class;
+	
+	// Get class data, add courses to search bar typeahead
+	//$http.get('./data/courses.json')
+	Classes.getClass($scope.id).success(function(data) {
+		$scope.currClass = data.data;
+	}).error(function (err) {
+		console.log(err);
+	})
+	
 }]);

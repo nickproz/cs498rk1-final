@@ -11,6 +11,10 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/login.html',
     controller: 'LoginController'
   }).
+  when('/class/:class/:id', {
+    templateUrl: 'partials/class.html',
+    controller: 'ClassController'
+  }).
   when('/chat/:class/:id', {
     templateUrl: 'partials/chat.html',
     controller: 'ChatController'

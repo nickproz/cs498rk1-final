@@ -1,10 +1,12 @@
 {
-  "name": "mp4",
-  "version": "1.0",
-  "homepage": "https://github.com/uiuc-web-programming/mp4_client_starter",
+  "name": "final-project",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nickproz/cs498rk1-final.git",
   "authors": [
-    "biplabdeka <biplab.deka@gmail.com>",
-    "sskhandek <sskhandek@gmail.com>"
+    "Nick Prozorovsky <prozoro2@illinois.edu>",
+    "Vyshnav Kakivaya <kakivay2@illinois.edu>",
+    "Xiaocheng Yuan <xyuan12@illinois.edu>",
+    "Chaoqun Liu <cliu68@illinois.edu>"
   ],
   "ignore": [
     "**/.*",
@@ -16,11 +18,19 @@
   ],
   "dependencies": {
     "jquery-2.1.3.min": "http://code.jquery.com/jquery-2.1.3.min.js",
-    "angular": "~1.3.13",
-    "angular-route": "~1.3.14",
-	"bootstrap": "",
-	"bootstrap-sass": "",
-	"typeahead.js": ""
+    "angular": "",
+    "angular-route": "",
+    "json3": "",
+    "jquery": "",
+    "es5-shim": "",
+    "angular-resource": "",
+    "angular-cookies": "",
+    "angular-sanitize": "",
+    "angular-route": "",
+    "angular-ui-router": "",
+  	"bootstrap": "",
+  	"bootstrap-sass": "",
+  	"typeahead.js": ""
   },
   "resolutions": {
     "angular": "~1.3.13"

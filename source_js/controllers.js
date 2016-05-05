@@ -134,9 +134,7 @@ finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$
 	}).error(function (err) {
 		console.log(err);
 	})
-
 }]);
-
 
 finalControllers.controller('SearchController', ['$scope' , '$http', '$window', '$route', 'Classes', function($scope, $http, $window, $route, Classes) {
 	
@@ -144,12 +142,8 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 	$('.navbar li').removeClass('active');
 	$('#navSearch').addClass('active');
 	
-	$scope.update = function() 
-	{
-		return;
-	}
-	
-	$scope.nameFilter = {'identifier': ""};
+	// Filter for our search box
+	$scope.query = {'identifier':''};
 	
 	// Substring matcher for search bar
 	$scope.substringMatcher = function(strs) {
@@ -164,26 +158,22 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		  }
 		});
 
-		$scope.nameFilter.identifier = q.toUpperCase();
 		cb(matches);
 	  };
 	};
 
 	// Get class data, add courses to search bar typeahead
-	//$http.get('./data/courses.json')
 	Classes.getClasses().success(function(data) {
 		var data = data.data;
 
 		var classes = [];
 		for(var i = 0; i < data.length; i++) {
-			//Classes.createClass(data[i]);
+			//Classes.createClass(data[i]); // Upload class data to backend
 			classes.push(data[i].identifier);
 		}
 
 		$scope.classes = classes;
 		$scope.data = data;
-
-		$scope.filters = data;
 		
 		$('#catalog-search .typeahead').typeahead({
 		  hint: true,
@@ -205,15 +195,14 @@ finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	
+	// Route parameters
 	$scope.id = $routeParams.id;
 	$scope.classRoute = $routeParams.class;
 	
 	// Get class data, add courses to search bar typeahead
-	//$http.get('./data/courses.json')
 	Classes.getClass($scope.id).success(function(data) {
 		$scope.currClass = data.data;
 	}).error(function (err) {
 		console.log(err);
 	})
-	
 }]);

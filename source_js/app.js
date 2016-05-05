@@ -37,13 +37,11 @@ function($stateProvider, $urlRouterProvider) {
   $stateProvider.state('search', {
     url : '/search',
     templateUrl : 'partials/search.html',
-    controller : 'SearchController',
-    }
+    controller : 'SearchController'
   }).state('chat', {
     url : '/chat/:class/:id',
     templateUrl : 'partials/chat.html',
-    controller : 'ChatController',
-    }
+    controller : 'ChatController'
   }).state('login', {
     url : '/login',
     templateUrl : '/login.html',

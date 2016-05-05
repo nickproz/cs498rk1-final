@@ -1,9 +1,10 @@
 // Get the packages we need
-var express = require('express');
+var express  = require('express');
+var app      = express();
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
 var passport = require('passport');
-var cookieParser = require('cookie-parser');
+var flash    = require('connect-flash');
+
 var router = express.Router();
 
 var User = require('./models/user');
@@ -13,8 +14,22 @@ var Class = require('./models/class');
 mongoose.connect('mongodb://nickproz:bearsrock@ds033897.mlab.com:33897/cs498rk1-final');
 var db = mongoose.connection;
 
-// Create our Express application
-var app = express();
+app.configure(function() {
+
+    // set up our express application
+    app.use(express.logger('dev')); // log every request to the console
+    app.use(express.cookieParser()); // read cookies (needed for auth)
+    app.use(express.bodyParser()); // get information from html forms
+
+    // required for passport
+    app.use(express.session({ secret: 'SECRET' })); // session secret
+    app.use(passport.initialize());
+    app.use(passport.session()); // persistent login sessions
+    app.use(flash()); // use connect-flash for flash messages stored in session
+
+});
+
+require('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // Use environment defined port or 4000
 var frontendPort = process.env.FRONTENDPORT || 3000;

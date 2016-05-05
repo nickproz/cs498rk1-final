@@ -1,4 +1,4 @@
-<div id="chat" ng-controller='ChatController'>    
+<div id="chat">    
 
 	<div class="chatroom clearfix">
 	  <div class="people-list" id="people-list">
@@ -7,35 +7,15 @@
 		  <i class="fa fa-search"></i>
 		</div>
 		<ul class="list">
-		  <li class="clearfix">
-			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
-			<div class="about">
-			  <div class="name">James Johnson</div>
-			  <div class="status">
-				<i class="fa fa-circle online"></i> online
-			  </div>
-			</div>
-		  </li>
-
-		  <li class="clearfix">
-			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
-			<div class="about">
-			  <div class="name">Alex Davidson</div>
-			  <div class="status">
-				<i class="fa fa-circle offline"></i> left 7 mins ago
-			  </div>
-			</div>
-		  </li>
-
-		  <li class="clearfix">
-			<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
-			<div class="about">
-			  <div class="name">Harold Hunt</div>
-			  <div class="status">
-				<i class="fa f-a-circle online"></i> online
-			  </div>
-			</div>
-		  </li>
+			<li class="clearfix" ng-repeat="user in participants">
+				<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png"/>
+				<div class="about">
+				<div class="name">{{user.name}}</div>
+				<div class="status">
+					<i class="fa fa-circle online"></i> online
+				</div>
+				</div>
+			</li>
 		</ul>
 	  </div>
 
@@ -45,43 +25,43 @@
 		  
 		  <div class="chat-about">
 			<div class="chat-with">{{class.identifier}}</div>
-			<div class="chat-num-messages">2 messages</div>
+			<div class="chat-num-messages">{{messages.length}} messages</div>
 		  </div>
 		  <i class="fa fa-star"></i>
 		</div> <!-- end chat-header -->
 		
 		<div class="chat-history">
 		  <ul>
-			<li class="clearfix">
-			  <div class="message-data align-right">
-				<span class="message-data-time" >10:10 AM, Today</span> &nbsp; &nbsp;
-				<span class="message-data-name" >James</span> <i class="fa fa-circle me"></i>
-				
+		  	<li class="clearfix" ng-repeat="message in messages | orderBy:'timestamp'">
+			  <div ng-if="!message.own" class="message-data">
+				<span class="message-data-name" >{{message.sender}}</span> <i class="fa fa-circle online"></i> &nbsp; &nbsp;
+				<span class="message-data-time" >{{message.timeString}}</span>
 			  </div>
-			  <div class="message other-message float-right">
-				Hi Alex, how are you? How is the project coming along?
+			  <div ng-if="message.own" class="message-data align-right">
+				<span class="message-data-time" >{{message.timeString}}</span> &nbsp; &nbsp;
+				<span class="message-data-name" >{{message.sender}}</span> <i class="fa fa-circle me"></i>
 			  </div>
-			</li>
-			
-			<li>
-			  <div class="message-data">
-				<span class="message-data-name"><i class="fa fa-circle online"></i> Alex</span>
-				<span class="message-data-time">10:12 AM, Today</span>
-			  </div>
-			  <div class="message my-message">
-				Are we meeting today? Project has been already finished and I have results to show you.
+			  <div class="message {{message.own ? 'other-message float-right' : 'my-message'}}">
+				{{message.messageType == 'text' ? message.message : ''}}
+				<a ng-if="message.isFile" ng-href="{{message.link}}">{{message.originalFilename}}</a>
+				<img
+					class="imageMessage"
+					style="max-width: 350px; max-height: 400px;"
+					ng-if="message.isImage"
+					ng-src="{{message.link}}"
+					ng-click="viewImage(message)"/>
 			  </div>
 			</li>
 		  </ul>
 		</div>
 
 	   <div class="chat-message clearfix">
-		  <textarea placeholder="Type your message" rows="4"></textarea>
-				  
-		  <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-		  <i class="fa fa-file-image-o"></i>
+		  <textarea ng-keypress="textareaEnter($event)" ng-model="messageInput" placeholder="Type your message" rows="4"></textarea>
+
+		  <div style="display: inline-block;" ngf-select="uploadFile($file)"><i class="fa fa-file-o"></i></div>&nbsp;&nbsp;&nbsp;
+		  <div style="display: inline-block;" ngf-select="uploadImage($file)"><i class="fa fa-file-image-o"></i></div>
 		  
-		  <button>Send</button>
+		  <button ng-click="sendMessage()">Send</button>
 
 		</div>
 		  

@@ -1,7 +1,11 @@
-var app = angular.module('final', ['ngRoute', 'finalControllers', 'finalServices']);
+var app = angular.module('final', ['ngRoute', 'finalControllers', 'finalServices', 'ggsChat', 'ngFileUpload']);
+
+app.constant('chatConfig', {
+  port: '12345'
+});
 
 // Default Config
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', 'ggsChatProvider', 'chatConfig', function($routeProvider, ggsChatProvider, chatConfig) {
   $routeProvider.
   when('/signup', {
     templateUrl: 'partials/signUp.html',
@@ -26,6 +30,8 @@ app.config(['$routeProvider', function($routeProvider) {
   otherwise({
     redirectTo: '/search'
   });
+
+  ggsChatProvider.init(':' + chatConfig.port);
 }]);
 
 // var app = angular.module('final', ['ui.router']);

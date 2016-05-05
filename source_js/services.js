@@ -1,10 +1,11 @@
 var finalServices = angular.module('finalServices', []);
 
 // Service for our User API requests
-finalServices.factory('Users', function($http, $window) {
+finalServices.factory('Users', ['$http', '$window', '$location', function($http, $window, $location) {
 
 	//var baseUrl = $window.sessionStorage.baseurl + '/api/users/';
 	var baseUrl = 'http://localhost:4000/api/users/';
+	baseUrl = 'http://172.17.254.208:4000/api/users/';
 
 	// Route to correct HTTP API call
     return {
@@ -28,7 +29,7 @@ finalServices.factory('Users', function($http, $window) {
 			return $http.delete(baseUrl + id);
 		}
     }
-});
+}]);
 
 // Auth service
 finalServices.factory('auth', ['$http', '$window',
@@ -88,6 +89,7 @@ finalServices.factory('Classes', function($http, $window) {
 
 	//var baseUrl = $window.sessionStorage.baseurl + '/api/classes/';
 	var baseUrl = 'http://localhost:4000/api/classes/';
+	baseUrl = 'http://172.17.254.208:4000/api/classes/';
 
 	// Route to correct HTTP API call
 	return {

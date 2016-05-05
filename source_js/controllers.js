@@ -119,21 +119,90 @@ finalControllers.controller('LoginController', ['$scope' , '$http', '$window', f
 
 }]);
 
-finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$routeParams', 'Classes', function($scope, $http, $window, $routeParams, Classes) {
+finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$timeout', '$routeParams', 'Classes', 'ggsChat', 'Upload', 'chatConfig', function($scope, $http, $window, $timeout, $routeParams, Classes, ggsChat, Upload, chatConfig) {
 
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navChat').addClass('active');
 
+	var uploadUrl = 'http://' + window.location.hostname + ':' + chatConfig.port + '/upload';
+	var fileUrl = 'http://' + window.location.hostname + ':' + chatConfig.port + '/file/';
+
 	$scope.id = $routeParams.id;
 
+	$scope.messages = [];
+	$scope.messageInput = "";
+
+	var randomName = Math.random().toString(36).substr(16);
+	var username = randomName;
+
+	ggsChat.joinRoom(username, String($scope.id), function(msg) {
+		msg.own = msg.sender == username;
+		msg.timeString = (new Date(msg.timestamp)).toLocaleString();
+		if (msg.messageType != 'text') {
+			msg.link = fileUrl + msg._id;
+			if (msg.messageType == 'file')
+				msg.isFile = true;
+			else
+				msg.isImage = true;
+		}
+		$scope.messages.push(msg);
+		$timeout(function() {
+			$('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
+		});
+	}, function() {
+		$scope.messages.splice(0);
+	}, function(users) {
+		$scope.participants = users.map(function(name) {
+			return {
+				name: name
+			};
+		});
+	});
+
+	$scope.sendMessage = function() {
+		if ($scope.messageInput) {
+			ggsChat.sendMessage($scope.messageInput);
+			$scope.messageInput = "";
+		}
+	};
+
+	$scope.textareaEnter = function(e) {
+		if (e.keyCode == 13 && !e.shiftKey) {
+			e.preventDefault();
+			$scope.sendMessage();
+		}
+	};
+
+	function doUpload(file, type) {
+		if (file) {
+			file.upload = Upload.upload({
+				url: uploadUrl,
+				data: {
+					attachment: file,
+					sender: username,
+					receiver: $scope.id,
+					messageType: type
+				}
+			});
+		}
+	}
+	$scope.uploadFile = function(file) {
+		doUpload(file, 'file');
+	};
+	$scope.uploadImage = function(file) {
+		doUpload(file, 'image');
+	};
+	$scope.viewImage = function(message) {
+		$window.open(message.link, '_blank');
+	};
+
 	// Get class data, add courses to search bar typeahead
-	//$http.get('./data/courses.json')
 	Classes.getClass($scope.id).success(function(data) {
 		$scope.class = data.data;
 	}).error(function (err) {
 		console.log(err);
-	})
+	});
 
 }]);
 

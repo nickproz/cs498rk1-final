@@ -2,7 +2,7 @@
 
 	<div class="row searchContainer">
 		<div id="catalog-search" class="col-sm-5 col-centered">
-				<input class="typeahead"type="text" class="form-control" ng-model="query['identifier']" placeholder="Search for a class">
+				<input class="typeahead"type="text" class="form-control" ng-model="query" placeholder="Search for a class">
 		</div>
 	</div>
 	
@@ -18,7 +18,7 @@
 				  </tr>
 				</thead>
 				<tbody>
-				  <tr ng-repeat="class in data | filter:query">
+				  <tr ng-repeat="class in data | filter:search">
 					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
 					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>	
 				  </tr>

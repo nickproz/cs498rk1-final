@@ -143,7 +143,10 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 	$('#navSearch').addClass('active');
 	
 	// Filter for our search box
-	$scope.query = {'identifier':''};
+	 $scope.search = function (row) {
+        return (angular.lowercase(row.identifier).indexOf(angular.lowercase($scope.query) || '') !== -1 ||
+                angular.lowercase(row.name).indexOf(angular.lowercase($scope.query) || '') !== -1);
+    };
 	
 	// Substring matcher for search bar
 	$scope.substringMatcher = function(strs) {

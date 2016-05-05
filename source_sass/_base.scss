@@ -343,6 +343,30 @@ body {
 
 .twitter-typeahead, .tt-hint, .tt-input, .tt-menu { width: 100%; }
 
+.updateButton
+{
+	color:black;
+	display:inline-block;
+	height:45px;
+}
+
+#class div, #class h1
+{
+	text-align:center;
+	margin: 20px auto;
+	color:black !important;
+}
+
+#class button
+{
+	margin: 0 5px;
+}
+
+.buttonContainer
+{
+	display:inline-block;
+}
+
 // SEARCH
 
 #classes 

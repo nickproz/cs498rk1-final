@@ -17,6 +17,7 @@ var db = mongoose.connection;
 var app = express();
 
 // Use environment defined port or 4000
+var frontendPort = process.env.FRONTENDPORT || 3000;
 var port = process.env.PORT || 4000;
 
 //Allow CORS so that backend and frontend can be put on different servers
@@ -330,3 +331,8 @@ classDetailsRoute.delete(function(req, res) {
 // Start the server
 app.listen(port);
 console.log('Server running on port ' + port);
+
+var frontend = express();
+frontend.use(express.static(__dirname + '/public'));
+frontend.listen(frontendPort);
+console.log('frontend running on port' + frontendPort);

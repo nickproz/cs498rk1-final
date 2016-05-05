@@ -169,7 +169,7 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		var classes = [];
 		for(var i = 0; i < data.length; i++) {
 			//Classes.createClass(data[i]); // Upload class data to backend
-			classes.push(data[i].identifier);
+			classes.push(data[i].identifier.toLowerCase());
 		}
 
 		$scope.classes = classes;

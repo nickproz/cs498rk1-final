@@ -32,6 +32,7 @@ body {
 .people-list {
   width: 30%;
   float: left;
+  overflow-y: scroll;
 
   .search {
     padding: 20px;

@@ -21,6 +21,7 @@
     "matchdep": "~0.1.2",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
-    "ejs": ">= 0.0.1"
+    "ejs": ">= 0.0.1",
+    "mongoose": "~4.4.14"
   }
 }

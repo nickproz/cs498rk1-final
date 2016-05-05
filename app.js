@@ -331,8 +331,8 @@ classDetailsRoute.delete(function(req, res) {
 // Start the server
 app.listen(port);
 console.log('Server running on port ' + port);
+console.log('Front-end running on port ' + frontendPort);
 
 var frontend = express();
 frontend.use(express.static(__dirname + '/public'));
 frontend.listen(frontendPort);
-console.log('frontend running on port' + frontendPort);

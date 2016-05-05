@@ -14,20 +14,14 @@ var Class = require('./models/class');
 mongoose.connect('mongodb://nickproz:bearsrock@ds033897.mlab.com:33897/cs498rk1-final');
 var db = mongoose.connection;
 
-app.configure(function() {
+app.use(express.cookieParser()); // read cookies (needed for auth)
+app.use(express.bodyParser()); // get information from html forms
 
-    // set up our express application
-    app.use(express.logger('dev')); // log every request to the console
-    app.use(express.cookieParser()); // read cookies (needed for auth)
-    app.use(express.bodyParser()); // get information from html forms
-
-    // required for passport
-    app.use(express.session({ secret: 'SECRET' })); // session secret
-    app.use(passport.initialize());
-    app.use(passport.session()); // persistent login sessions
-    app.use(flash()); // use connect-flash for flash messages stored in session
-
-});
+// required for passport
+app.use(express.session({ secret: 'SECRET' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

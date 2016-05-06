@@ -41,7 +41,7 @@
 			  </div>
 			  <div class="message {{message.own ? 'other-message float-right' : 'my-message'}}">
 				{{message.messageType == 'text' ? message.message : ''}}
-				<a ng-if="message.isFile" ng-href="{{message.link}}">{{message.originalFilename}}</a>
+				<a ng-if="message.isFile" style="color:white;" ng-href="{{message.link}}">{{message.originalFilename}}</a>
 				<img
 					class="imageMessage"
 					style="max-width: 100%; max-height: 100%;"

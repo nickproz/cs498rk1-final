@@ -7,7 +7,20 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.initConfig({
+    env: {
+      stuff: {
+        PORT: 4000,
+        JWT_SECRET: 'LMAOTHISSECRETISEASYTOGUESS'
+      }
+    },
+    shell: {
+      nm: {
+        command: 'nodemon --watch app.js --watch models/ -L app.js'
+      }
+    },
     clean: ["public/js"],
     uglify: {
       my_target: {
@@ -45,15 +58,7 @@ module.exports = function(grunt) {
         options: {
           config: 'compass_config.rb'
         } //options
-      }, //dev
-
-      // Foundation is unecessary.
-      // foundation: {
-      //   options: {
-      //     config: 'compass_foundation_config.rb'
-      //   } //options
-      // } //foundation
-
+      } //dev
     }, //compass
     watch: {
       options: { livereload: true },
@@ -69,18 +74,7 @@ module.exports = function(grunt) {
       html: {
         files: ['public/*.html']
       }
-    }, //watch
-    express: {
-      options: {
-        // Override defaults here
-        port: 4000
-      },
-      dev: {
-        options: {
-          script: 'app.js'
-        }
-      }
-  }
+    }
   }) //initConfig
-  grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'express:dev', 'watch']);
+  grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'env:stuff', 'shell:nm', 'watch']);
 } //exports

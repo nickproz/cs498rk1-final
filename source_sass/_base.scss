@@ -503,6 +503,38 @@ textarea {
   text-align: right;
 }
 
+#profile, #profile h1
+{
+	color:black;
+}
+
+#profile p
+{
+	font-weight: none;
+	font-size: 20px;
+	color: $themeGreen;
+}
+
+#class button
+{
+	color: $themeGreen;
+}
+
+#profile a
+{
+	text-decoration:none;
+}
+
+#profile a:hover
+{
+	color: lighten($themeGreen, 20%);
+}
+
+.enrolledClasses a, .enrolledClasses button
+{
+	margin: 5px;
+}
+
 // OTHER
 
 html, body{

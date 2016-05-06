@@ -3,13 +3,12 @@
 	<div class="chatroom clearfix">
 	  <div class="people-list" id="people-list">
 		<div class="search">
-		  <input type="text" placeholder="search" />
-		  <i class="fa fa-search"></i>
+		  <input type="text" ng-model="userFilter" placeholder="search" />
+		  <!-- <i class="fa fa-search"></i> -->
 		</div>
 		<span class="search">{{participants.length + ' in chat'}}</span>
 		<ul class="list">
-			<li class="clearfix" ng-repeat="user in participants">
-				<img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png"/>
+			<li class="clearfix" ng-repeat="user in participants | filter:userFilter">
 				<div class="about">
 				<div class="name">{{user.name}}</div>
 				<div class="status">
@@ -22,13 +21,11 @@
 
 	  <div class="chat">
 		<div class="chat-header clearfix">
-		  <img src="https://i2.wp.com/codepen.io/assets/avatars/user-avatar-80x80-94696e1c3870f64217a8040eedd4a1ed.png" />
-		  
 		  <div class="chat-about">
 			<div class="chat-with">{{class.identifier}}</div>
 			<div class="chat-num-messages">{{messages.length}} messages</div>
 		  </div>
-		  <i class="fa fa-star"></i>
+		  <!-- <i class="fa fa-star"></i> -->
 		</div> <!-- end chat-header -->
 		
 		<div class="chat-history">
@@ -47,7 +44,7 @@
 				<a ng-if="message.isFile" ng-href="{{message.link}}">{{message.originalFilename}}</a>
 				<img
 					class="imageMessage"
-					style="max-width: 350px; max-height: 400px;"
+					style="max-width: 100%; max-height: 100%;"
 					ng-if="message.isImage"
 					ng-src="{{message.link}}"
 					ng-click="viewImage(message)"/>

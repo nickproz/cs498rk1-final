@@ -115,8 +115,6 @@ loginRoute.post(function(req, res, next) {
             return res.status(400).json({code: -1, message: "The email supplied does not exist!", data: err});
         if (data.validPassword(password))
             return res.json({token: data.generateJWT()});
-        console.log(data.email);
-        console.log(data.password);
         return res.status(400).json({code: -1, message: "The credentials supplied do not match!", data: err});
     });
 });
@@ -138,7 +136,7 @@ usersRoute.post(function(req, res) {
     user.email = data.email;
 
     if (!data.password || data.password.length < 6)
-        return res.status(500).json({message: 'Please enter a valid password!', data: []});
+        return res.status(500).json({message: 'Please enter a valid password with at least 6 characters!', data: []});
 
     user.setPassword(data.password);
 
@@ -150,7 +148,7 @@ usersRoute.post(function(req, res) {
         if (person === null) {
             user.save(function(err) {
                 if (err)
-                    return res.status(500).send({ 'message': 'Failed to save user to the database.', 'data': err });
+                    return res.status(500).send({ 'message': 'The username provided is already in use!', 'data': err });
                 else
                     return res.json({token: user.generateJWT()});
             });
@@ -215,9 +213,13 @@ userDetailsRoute.put(onlyAllowLoggedInUsers, function(req, res) {
     var user = req.body;
 	console.log(user);
 	
-    if(user.firstName === "undefined" || user.lastName === "undefined" || user.userName === "undefined" || user.email === "undefined" || user.firstName === undefined || user.lastName === undefined || user.userName === undefined || user.email === undefined) {
-        return res.status(500).send({ 'message': 'Please fill out all fields with valid characters.', 'data': [] });
-    }
+    // if(user.firstName === "undefined" || user.lastName === "undefined" || user.username === "undefined" || user.email === "undefined" || user.password === "undefined" || user.firstName === undefined || user.lastName === undefined || user.username === undefined || user.email === undefined || user.password === undefined) {
+    //     return res.status(500).send({ 'message': 'Please fill out all fields with valid characters.', 'data': [] });
+    // }
+    ['firstName', 'lastName', 'userName', 'email'].forEach(function(attr) {
+        if (!user[attr] || user[attr] === 'undefined')
+            return res.status(500).send({message: 'Please put with all the required fields!'});
+    });
 
     // Use Passport method to set a secure password.
     //User.setPassword(user.password)

@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-concurrent');
+  var frontendPort = parseInt(grunt.option('fport')) || 3000;
   grunt.initConfig({
     concurrent: {
       server: {
@@ -21,12 +22,16 @@ module.exports = function(grunt) {
     env: {
       stuff: {
         PORT: 4000,
-        JWT_SECRET: 'LMAOTHISSECRETISEASYTOGUESS'
+        JWT_SECRET: 'LMAOTHISSECRETISEASYTOGUESS',
+        FRONTENDPORT: frontendPort
       }
     },
     shell: {
       nm: {
         command: 'nodemon --watch app.js --watch models/ -L app.js'
+      },
+      prod: {
+        command: 'node app.js'
       }
     },
     clean: ["public/js"],
@@ -84,4 +89,5 @@ module.exports = function(grunt) {
     }
   }) //initConfig
   grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'env:stuff', 'concurrent:server']);
+  grunt.registerTask('prod', ['compass', 'clean', 'copy:chat_service', 'uglify', 'env:stuff', 'shell:prod']);
 } //exports

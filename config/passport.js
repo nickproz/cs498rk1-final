@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 var passport = require('passport'),
     User = require('mongoose').model('User');
 
@@ -20,3 +21,5 @@ module.exports = function() {
     require('./strategies/local.js')();
     require('./strategies/facebook.js')();
 };
+=======
+>>>>>>> Stashed changes

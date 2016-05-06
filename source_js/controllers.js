@@ -1,6 +1,6 @@
 var finalControllers = angular.module('finalControllers', []);
 
-finalControllers.controller('SignUpController', ['$scope' , '$http', '$window', 'Users', function($scope, $http, $window, Users) {
+finalControllers.controller('SignUpController', ['$scope' , '$http', '$window', '$location', 'Users', 'Auth', function($scope, $http, $window, $location, Users, Auth) {
 
 	// Form "placeholders"
 	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
@@ -47,9 +47,8 @@ finalControllers.controller('SignUpController', ['$scope' , '$http', '$window', 
 		}
 
 		Users.createUser($scope.user).success(function(data) {
-			$scope.userSuccess = data.message;
-			$('#userSuccess').show();
-			$('#userFail').hide();
+			Auth.saveToken(data.token);
+			$location.path('/search');
 		}).error(function(data) {
 			$scope.userFail = data.message;
 			$('#userSuccess').hide();
@@ -85,7 +84,11 @@ function($scope, $state, auth) {
 	};
 }]);
 
-finalControllers.controller('LoginController', ['$scope' , '$http', '$window', function($scope, $http, $window) {
+finalControllers.controller('LoginController', ['$scope' , '$http', '$window', '$location', 'Auth', function($scope, $http, $window, $location, Auth) {
+	$scope.showError = false;
+	// Navbar update
+	$('.navbar li').removeClass('active');
+	$('#navLogin').addClass('active');
 
 	// Form "placeholders"
 	$('.form').find('input, textarea').on('keyup blur focus', function (e) {
@@ -113,14 +116,26 @@ finalControllers.controller('LoginController', ['$scope' , '$http', '$window', f
 		}
 	});
 
-	// Navbar update
-	$('.navbar li').removeClass('active');
-	$('#navLogin').addClass('active');
+	$scope.login = function(e) {
+		e.preventDefault();
+		$scope.showError = false;
+		Auth.logIn({email: $scope.emInput, password: $scope.pwInput}, function() {
+			$location.path('/profile');
+		}, function(err) {
+			$scope.showError = true;
+			$scope.userFail = err.message;
+		});
+	}
 
 }]);
 
-finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$timeout', '$routeParams', 'Classes', 'ggsChat', 'Upload', 'chatConfig', function($scope, $http, $window, $timeout, $routeParams, Classes, ggsChat, Upload, chatConfig) {
-
+finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$timeout', '$routeParams', '$location', 'Classes', 'ggsChat', 'Upload', 'chatConfig', 'Auth', function($scope, $http, $window, $timeout, $routeParams, $location, Classes, ggsChat, Upload, chatConfig, Auth) {
+	if (!Auth.isLoggedIn()) {
+		return $location.path('/login');
+	}
+	$scope.$on('userLogin', function(e, args) {
+		$location.path('/search');
+	});
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navChat').addClass('active');
@@ -133,8 +148,7 @@ finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$
 	$scope.messages = [];
 	$scope.messageInput = "";
 
-	var randomName = Math.random().toString(36).substr(16);
-	var username = randomName;
+	var username = Auth.currentUser().userName;
 
 	ggsChat.joinRoom(username, String($scope.id), function(msg) {
 		msg.own = msg.sender == username;
@@ -263,10 +277,12 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 	})
 }]);
 
-finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Classes', 'Users', function($scope, $http, $window, $route, $routeParams, Classes, Users) {
-	
+finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '$route', '$routeParams', '$location', 'Classes', 'Users', 'Auth', function($scope, $http, $window, $route, $routeParams, $location, Classes, Users, Auth) {
 	// Navbar update
 	$('.navbar li').removeClass('active');
+	
+	$scope.showError = false;
+	$scope.showSuccess = false;
 	
 	// Route parameters
 	$scope.id = $routeParams.id;
@@ -279,30 +295,49 @@ finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '
 		console.log(err);
 	})
 	
-	// REPLACE WITH CURRENT ACTIVE USER
-	Users.getUser('572c04f9295b333110f34b7e').success(function(data) {
-		$scope.user = data.data;
-	}).error(function (err) {
-		console.log(err);
-	})
-	
-	$scope.enroll = function()
-	{
-		if($scope.user.classes.indexOf($scope.currClass.id))
-			$scope.user.classes.push($scope.currClass.id)
-		Users.updateUser($scope.user, $scope.user._id).success(function(data) {
+	if (Auth.isLoggedIn()) {
+		$scope.userid = Auth.currentUser()._id;
+		Users.getUser($scope.userid).success(function(data) {
 			$scope.user = data.data;
 		}).error(function (err) {
 			console.log(err);
 		})
-		
+	}
+
+	$scope.$on('userLogout', function(e, args) {
+		$scope.userid = undefined;
+		$scope.user = undefined;
+	});
+	
+	
+	$scope.enroll = function()
+	{
+		if (!Auth.isLoggedIn()) {
+			return $location.path('/login');
+		}
+		if($scope.user.classes.indexOf($scope.currClass.id) === -1) {
+			$scope.user.classes.push($scope.currClass.id)
+			Users.updateUser($scope.user, $scope.user._id).success(function(data) {
+				$scope.user = data.data;
+				$scope.showError = false;
+				$scope.showSuccess = true;
+			}).error(function (err) {
+				console.log(err);
+			})
+		}
+		else {
+			$scope.showSuccess = false;
+			$scope.showError = true;
+		}
 	}
 }]);
 
-finalControllers.controller('ProfileController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Users', 'Classes', function($scope, $http, $window, $route, $routeParams, Users, Classes) {
-	
-	$scope.id = $routeParams.id;
-
+finalControllers.controller('ProfileController', ['$scope' , '$http', '$window', '$route', '$routeParams', '$location', 'Users', 'Classes', 'Auth', function($scope, $http, $window, $route, $routeParams, $location, Users, Classes, Auth) {
+	if (!Auth.isLoggedIn()) {
+		return $location.path('/login');
+	}
+	$scope.id = $routeParams.id || Auth.currentUser()._id;
+	$scope.own = $scope.id == Auth.currentUser()._id;
 	// Get class data, add courses to search bar typeahead
 	Users.getUser($scope.id).success(function(data) {
 		$scope.user = data.data;
@@ -340,4 +375,29 @@ finalControllers.controller('ProfileController', ['$scope' , '$http', '$window',
 		})
 	}
 	
+}]);
+
+finalControllers.controller('navbarController', ['$scope', '$location', 'Users', 'Auth', function($scope, $location, Users, Auth) {
+	$scope.isLoggedIn = false;
+	updateView();
+	$scope.$on('userLogin', function(event, args) {
+		updateView();
+	});
+	$scope.logout = function() {
+		Auth.logOut();
+		updateView();
+		$location.path('/login');
+	};
+	function updateView() {
+		if (Auth.isLoggedIn()) {
+			Users.getUser(Auth.currentUser()._id).success(function(data) {
+				$scope.isLoggedIn = true;
+				$scope.firstName = data.data.firstName;
+			}).error(function(err) {
+				console.log(error);
+			});
+		} else {
+			$scope.isLoggedIn = false;
+		}
+	}
 }]);

@@ -17,11 +17,22 @@
 	
 	<div style="text-align:center; margin: 0 auto">
 		<div class="buttonContainer">
-			<button><a href="#/chat/{{classRoute}}/{{currClass.id}}" style="text-decoration: none">  Chat  </a></button>
+			<button><a ng-href="#/chat/{{classRoute}}/{{id}}" style="text-decoration: none">  Chat  </a></button>
 		</div>
 		<div class="buttonContainer">
 			<button ng-click="enroll()"> Enroll in Class </button>
 		</div>
+		
+		<div ng-if="showError" id="enrollFail" class="alert alert-danger">
+		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Already enrolled in the class!</strong>
+	  </div>
+	  
+	  <div ng-if="showSuccess" id="enrollSuccess" class="alert alert-success">
+		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Successfully enrolled in the class</strong>
+	  </div>
 	</div>
+	
 	
 </div>

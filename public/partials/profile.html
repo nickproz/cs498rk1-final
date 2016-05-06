@@ -6,6 +6,6 @@
 	<p> {{user.email}} </p>
 	<p> &nbsp</p>
 	<p> Classes Enrolled in: </p>
-	<p class="enrolledClasses" ng-repeat="class in classes"> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} <a> <button ng-click="unEnroll(class.id)"> Remove Class </button> </p>
+	<p class="enrolledClasses" ng-repeat="class in classes"> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} <a> <button ng-if="own" ng-click="unEnroll(class.id)"> Remove Class </button> </p>
 	
 </div>

@@ -3,7 +3,11 @@ var mongoose = require('mongoose');
 
 // Define our task schema
 var ClassSchema = mongoose.Schema({
-    id: {type: String, unique: true, required: true},
+    id: {
+    	type: String,
+    	unique: true,
+    	required: true
+    },
     identifier: String,
     department_id: String,
     name: String,

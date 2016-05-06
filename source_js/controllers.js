@@ -206,19 +206,17 @@ finalControllers.controller('ChatController', ['$scope' , '$http', '$window', '$
 
 }]);
 
-
 finalControllers.controller('SearchController', ['$scope' , '$http', '$window', '$route', 'Classes', function($scope, $http, $window, $route, Classes) {
 	
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	$('#navSearch').addClass('active');
 	
-	$scope.update = function() 
-	{
-		return;
-	}
-	
-	$scope.nameFilter = {'identifier': ""};
+	// Filter for our search box
+	 $scope.search = function (row) {
+        return (angular.lowercase(row.identifier).indexOf(angular.lowercase($scope.query) || '') !== -1 ||
+                angular.lowercase(row.name).indexOf(angular.lowercase($scope.query) || '') !== -1);
+    };
 	
 	// Substring matcher for search bar
 	$scope.substringMatcher = function(strs) {
@@ -233,56 +231,113 @@ finalControllers.controller('SearchController', ['$scope' , '$http', '$window', 
 		  }
 		});
 
-		$scope.nameFilter.identifier = q.toUpperCase();
 		cb(matches);
 	  };
 	};
 
 	// Get class data, add courses to search bar typeahead
-	//$http.get('./data/courses.json')
 	Classes.getClasses().success(function(data) {
 		var data = data.data;
 
 		var classes = [];
 		for(var i = 0; i < data.length; i++) {
-			//Classes.createClass(data[i]);
-			classes.push(data[i].identifier);
+			//Classes.createClass(data[i]); // Upload class data to backend
+			classes.push(data[i].identifier.toLowerCase());
 		}
 
 		$scope.classes = classes;
 		$scope.data = data;
-
-		$scope.filters = data;
 		
-		$('#catalog-search .typeahead').typeahead({
-		  hint: true,
-		  highlight: true,
-		  minLength: 1
-		},
-		{
-		  name: 'classes',
-		  source: $scope.substringMatcher(classes)
-		});
+		/* $('#catalog-search .typeahead').typeahead({
+		   hint: true,
+		   highlight: true,
+		   minLength: 1
+		 },
+		 {
+		   name: 'classes',
+		   source: $scope.substringMatcher(classes)
+		 }); */
 
 	}).error(function (err) {
 		console.log(err);
 	})
 }]);
 
-finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Classes', function($scope, $http, $window, $route, $routeParams, Classes) {
+finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Classes', 'Users', function($scope, $http, $window, $route, $routeParams, Classes, Users) {
 	
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	
+	// Route parameters
 	$scope.id = $routeParams.id;
 	$scope.classRoute = $routeParams.class;
 	
 	// Get class data, add courses to search bar typeahead
-	//$http.get('./data/courses.json')
 	Classes.getClass($scope.id).success(function(data) {
 		$scope.currClass = data.data;
 	}).error(function (err) {
 		console.log(err);
 	})
+	
+	// REPLACE WITH CURRENT ACTIVE USER
+	Users.getUser('572c04f9295b333110f34b7e').success(function(data) {
+		$scope.user = data.data;
+	}).error(function (err) {
+		console.log(err);
+	})
+	
+	$scope.enroll = function()
+	{
+		if($scope.user.classes.indexOf($scope.currClass.id))
+			$scope.user.classes.push($scope.currClass.id)
+		Users.updateUser($scope.user, $scope.user._id).success(function(data) {
+			$scope.user = data.data;
+		}).error(function (err) {
+			console.log(err);
+		})
+		
+	}
+}]);
+
+finalControllers.controller('ProfileController', ['$scope' , '$http', '$window', '$route', '$routeParams', 'Users', 'Classes', function($scope, $http, $window, $route, $routeParams, Users, Classes) {
+	
+	$scope.id = $routeParams.id;
+
+	// Get class data, add courses to search bar typeahead
+	Users.getUser($scope.id).success(function(data) {
+		$scope.user = data.data;
+		
+		$scope.classes = [];
+		for(var i = 0; i < $scope.user.classes.length; i++)
+		{
+			Classes.getClass($scope.user.classes[i]).success(function(data) {
+				$scope.classes.push(data.data);
+			}).error(function (err) {
+				console.log(err);
+			})
+		}
+	}).error(function (err) {
+		console.log(err);
+	})
+	
+	$scope.unEnroll = function(classID)
+	{
+		var index = $scope.user.classes.indexOf(classID);
+		$scope.user.classes.splice(index, 1);
+		Users.updateUser($scope.user, $scope.user._id).success(function(data) {
+			$scope.user = data.data;
+			$scope.classes = [];
+			for(var i = 0; i < $scope.user.classes.length; i++)
+			{
+				Classes.getClass($scope.user.classes[i]).success(function(data) {
+					$scope.classes.push(data.data);
+				}).error(function (err) {
+					console.log(err);
+				})
+			}
+		}).error(function (err) {
+			console.log(err);
+		})
+	}
 	
 }]);

@@ -27,6 +27,10 @@ app.config(['$routeProvider', 'ggsChatProvider', 'chatConfig', function($routePr
     templateUrl: 'partials/search.html',
     controller: 'SearchController'
   }).
+  when('/profile/:id', {
+    templateUrl: 'partials/profile.html',
+    controller: 'ProfileController'
+  }).
   otherwise({
     redirectTo: '/search'
   });

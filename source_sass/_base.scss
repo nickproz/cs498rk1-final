@@ -9,8 +9,34 @@ $themeGreen: #1ab188;
 $themeDarkBlue: #13232F;
 $themeGray: #555e5e;
 
-// CHATROOM
+// NAVBAR
+.navbar-collapse.collapse, {
+display: block!important;
+}
 
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
+}
+
+.navbar ul {
+	margin:0px 10px;
+}
+
+@media only screen and (max-width: 640px) {
+    .navbar ul {
+		margin:5px 10px;
+	}
+}
+
+// CHATROOM
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -295,6 +321,7 @@ body {
 
 }
 
+
 #catalog-search input 
 {
 	color: black;
@@ -358,62 +385,12 @@ body {
 	line-height: 24px;
 }
 
-.tt-suggestion.tt-selectable:hover {
-	color: #fff;
-	background-color: #0097cf;
-	cursor: pointer;
-	cursor: hand;
-}
+// SEARCH & CLASSES
 
-.tt-suggestion.tt-cursor {
-	color: #fff;
-	background-color: #0097cf;
-}
-
-.tt-suggestion p {
-	margin: 0;
-}
-/*
-@media(min-width:768px){
-	.collapse.navbar-collapse {
-		display: flex !important;
-	}
-	#catalog-search {
-		flex: 1;
-	}
-}
-*/
-#catalog-search {
-	//height: 50px;
-}
-
-.twitter-typeahead, .tt-hint, .tt-input, .tt-menu { width: 100%; }
-
-.updateButton
+#search input
 {
 	color:black;
-	display:inline-block;
-	height:45px;
 }
-
-#class div, #class h1
-{
-	text-align:center;
-	margin: 20px auto;
-	color:black !important;
-}
-
-#class button
-{
-	margin: 0 5px;
-}
-
-.buttonContainer
-{
-	display:inline-block;
-}
-
-// SEARCH
 
 #classes 
 {
@@ -421,11 +398,29 @@ body {
 	margin:40px auto;
 }
 
-.col-centered
+#classes a
 {
-	margin: auto;
-	float: none;
+	text-decoration: none;
 }
+
+#class, #class h1
+{
+	color:black;
+	text-align:center;
+}
+
+#class p
+{
+	margin: 20px 0px;
+}
+
+.buttonContainer
+{
+	margin:10px;
+	display:inline-block;
+}
+
+
 
 // SIGNUP/LOGIN
 #userFail, #userSuccess
@@ -612,129 +607,36 @@ textarea {
   text-align: right;
 }
 
-/* SIDE NAVBAR */
-#wrapper {
-    padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+#profile, #profile h1
+{
+	color:black;
 }
 
-#wrapper.toggled {
-    padding-left: 250px;
+#profile p
+{
+	font-weight: none;
+	font-size: 20px;
+	color: $themeGreen;
 }
 
-#sidebar-wrapper {
-    z-index: 1000;
-    position: fixed;
-    left: 250px;
-    width: 0;
-    height: 100%;
-    margin-left: -250px;
-    overflow-y: auto;
-    background: #000;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+#class button
+{
+	color: $themeGreen;
 }
 
-#wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+#profile a
+{
+	text-decoration:none;
 }
 
-#page-content-wrapper {
-    width: 100%;
-    position: absolute;
-    padding: 15px;
+#profile a:hover
+{
+	color: lighten($themeGreen, 20%);
 }
 
-#wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    margin-right: -250px;
-}
-
-/* Sidebar Styles */
-
-#sidebar-wrapper {
-	position:fixed;
-	height: 100vh;
-	background:#13232F;
-}
-
-.sidebar-nav {
-    position: absolute;
-    top: 0;
-    width: 250px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
-}
-
-.sidebar-nav li a {
-    display: block;
-    text-decoration: none;
-    color: #999999;
-}
-
-.sidebar-nav li a:hover {
-    text-decoration: none;
-    color: #fff;
-    background: rgba(255,255,255,0.2);
-}
-
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
-    text-decoration: none;
-}
-
-.sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
-}
-
-.sidebar-nav > .sidebar-brand a {
-    color: #999999;
-}
-
-.sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
-    background: none;
-}
-
-@media(min-width:768px) {
-    #wrapper {
-        padding-left: 250px;
-    }
-
-    #wrapper.toggled {
-        padding-left: 0;
-    }
-
-    #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-    }
-
-    #page-content-wrapper {
-        padding: 20px;
-        position: relative;
-    }
-
-    #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-    }
+.enrolledClasses a, .enrolledClasses button
+{
+	margin: 5px;
 }
 
 // OTHER
@@ -748,6 +650,12 @@ html, body{
 table
 {
 	color:black;
+}
+
+.col-centered
+{
+	margin: auto;
+	float: none;
 }
 
 ul

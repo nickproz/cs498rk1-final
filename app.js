@@ -165,17 +165,18 @@ userDetailsRoute.put(function(req, res) {
 
     var id = req.params.id;
     var user = req.body;
-
-    if(user.firstName === "undefined" || user.lastName === "undefined" || user.userName === "undefined" || user.email === "undefined" || user.password === "undefined" || user.firstName === undefined || user.lastName === undefined || user.userName === undefined || user.email === undefined || user.password === undefined) {
+	console.log(user);
+	
+    if(user.firstName === "undefined" || user.lastName === "undefined" || user.username === "undefined" || user.email === "undefined" || user.password === "undefined" || user.firstName === undefined || user.lastName === undefined || user.username === undefined || user.email === undefined || user.password === undefined) {
         return res.status(500).send({ 'message': 'Please fill out all fields with valid characters.', 'data': [] });
     }
 
     // Use Passport method to set a secure password.
-    User.setPassword(user.password)
+    //User.setPassword(user.password)
 
     User.update(
         { '_id': id },
-        { $set: {"firstName": user.firstName, "lastName": user.lastName, "userName": user.userName, "email": user.email} },
+        { $set: {"firstName": user.firstName, "lastName": user.lastName, "userName": user.userName, "email": user.email, 'classes': user.classes} },
 
         function(err, person) {
             if(err)
@@ -339,9 +340,9 @@ classDetailsRoute.delete(function(req, res) {
 // Start the server
 app.listen(port);
 console.log('Server running on port ' + port);
+console.log('Front-end running on port ' + frontendPort);
 
 var frontend = express();
 frontend.use(express.static(__dirname + '/public'));
 console.log('trying to start frontend on ' + frontendPort);
 frontend.listen(frontendPort);
-console.log('frontend running on port' + frontendPort);

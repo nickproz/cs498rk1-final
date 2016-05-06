@@ -1,31 +1,30 @@
 <div id="search">    
 
 	<div class="row searchContainer">
-		<div id="catalog-search" class="col-sm-5 col-sm-offset-3">
-				<input class="typeahead"type="text" class="form-control" placeholder="Search for a class">
-		</div>
-		<div class="col-sm-1"> 
-			<button class="updateButton" ng-click="update()"> Search </button>
+		<div id="catalog-search" class="col-sm-5 col-centered">
+				<input class="typeahead"type="text" class="form-control" ng-model="query" placeholder="Search for a class">
 		</div>
 	</div>
 	
-	<div id="classes">
-		<table class="table table-hover table-responsive table-bordered table-striped">
-			<thead>
-			  <tr>
-				<th>Class</th>
-				<th>Name</th>
-				<!-- <th>Credit</th> -->
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr ng-repeat="class in data | filter:nameFilter">
-				<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
-				<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>
-				<!-- <td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.credit}} </a> </td> -->	
-			  </tr>
-			</tbody>
-		</table>
+	<div id="classes" class="row">
+		<div class="col-sm-7 col-centered">
+			<table class="table table-hover table-responsive table-bordered table-striped">
+				<thead>
+					<col width="25%">
+					<col width="75%">
+				  <tr>
+					<th>Class</th>
+					<th>Name</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr ng-repeat="class in data | filter:search">
+					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} </a> </td>
+					<td> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.name}} </a> </td>	
+				  </tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	
 </div>

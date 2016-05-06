@@ -1,16 +1,16 @@
 <div id="class">    
 
 	<div class="row">
-		<div class="col-sm-3 col-centered">
+		<div class="col-sm-5 col-centered">
 			<h1> {{currClass.identifier}} </h1>
 		</div>
-		<div class="col-sm-3 col-centered">
+		<div class="col-sm-5 col-centered">
 			<p> {{currClass.name}} </p>
 		</div>
-		<div class="col-sm-3 col-centered">
+		<div class="col-sm-5 col-centered">
 			<p> {{currClass.credit}} </p>
 		</div>
-		<div class="col-sm-3 col-centered">
+		<div class="col-sm-5 col-centered">
 			<p> {{currClass.description}} </p>
 		</div>
 	</div>
@@ -20,7 +20,7 @@
 			<button><a href="#/chat/{{classRoute}}/{{currClass.id}}" style="text-decoration: none">  Chat  </a></button>
 		</div>
 		<div class="buttonContainer">
-			<button><a href="" style="text-decoration: none">  Enroll in Class  </a></button>
+			<button ng-click="enroll()"> Enroll in Class </button>
 		</div>
 	</div>
 	

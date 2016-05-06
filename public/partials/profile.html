@@ -1,0 +1,11 @@
+<div id="profile">    
+
+	<h1> User Profile <h1>
+	<p> {{user.firstName }} {{user.lastName}}</p>
+	<p> {{user.username}} </p>
+	<p> {{user.email}} </p>
+	<p> &nbsp</p>
+	<p> Classes Enrolled in: </p>
+	<p class="enrolledClasses" ng-repeat="class in classes"> <a href="#/class/{{class.identifier.toLowerCase().split(' ').join('')}}/{{class.id}}"> {{class.identifier}} <a> <button ng-click="unEnroll(class.id)"> Remove Class </button> </p>
+	
+</div>

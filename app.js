@@ -138,7 +138,7 @@ usersRoute.post(function(req, res) {
     user.email = data.email;
 
     if (!data.password || data.password.length < 6)
-        return res.status(500).json({message: 'Please enter a valid password!', data: []});
+        return res.status(500).json({message: 'Please enter a valid password with at least 6 characters!', data: []});
 
     user.setPassword(data.password);
 
@@ -150,7 +150,7 @@ usersRoute.post(function(req, res) {
         if (person === null) {
             user.save(function(err) {
                 if (err)
-                    return res.status(500).send({ 'message': 'Failed to save user to the database.', 'data': err });
+                    return res.status(500).send({ 'message': 'The username provided is already in use!', 'data': err });
                 else
                     return res.json({token: user.generateJWT()});
             });

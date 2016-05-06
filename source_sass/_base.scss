@@ -50,14 +50,40 @@ body {
 
 .chatroom {
   margin: 20px auto;
-  width: 60%;
+  width: 90%;
+  height: 90vh;
   background: $themeGreen;
   border-radius: 5px;
 }
 
+@media(max-width:768px){
+	.people-list
+	{
+		display:none;
+	}
+	.chat
+	{
+		width: 100% !important;
+	}
+	.chatroom
+	{
+		height: 83vh !important;
+	}
+	.message {
+		width: 80% !important;
+	}
+}
+
+.chat-with, .chat-num-messages
+{
+	display:inline-block;
+}
+
 .people-list {
-  width: 30%;
+  height: 100%;
+  width: 20%;
   float: left;
+  overflow-y: scroll;
 
   .search {
     padding: 20px;
@@ -101,7 +127,7 @@ body {
   }
 
   .status {
-    color: black;
+    color: $themeDarkBlue;
   }
 }
 
@@ -111,7 +137,7 @@ body {
   }
 
 .online {
-  color: $green;
+  color: lighten($themeDarkBlue, 15%);
 }
 
 .offline {
@@ -119,7 +145,7 @@ body {
 }
 
 .me {
-  color: $blue;
+  color: lighten($themeDarkBlue, 15%);
 }
 
 .align-left {
@@ -144,7 +170,8 @@ body {
 }
 
 .chat {
-  width: 70%;
+  width: 80%;
+  height: 100%;
   float:left;
   background-color: rgb(160, 179, 176);
   border-top-right-radius: 5px;
@@ -156,24 +183,30 @@ body {
     background: $themeDarkBlue;
     padding: 20px;
     border-bottom: 2px solid #333;
-    
+    height:10%;
+	
     img {
       float: left;
     }
     
     .chat-about {
+	  height: 100%;
+	  width: 100%;
+	  text-align:center;
+	  margin-left:auto;
+	  margin-right:auto;
       float: left;
       padding-left: 10px;
-      margin-top: 6px;
     }
     
     .chat-with {
       font-weight: bold;
-      font-size: 16px;
+      font-size: 4vh;
     }
     
     .chat-num-messages {
-      color: $gray;
+	  font-size: 2vh;
+      color: $themeGreen;
     }
     
     .fa-star {
@@ -187,7 +220,8 @@ body {
   .chat-history {
     padding: 30px 30px 20px;
     overflow-y: scroll;
-    height: 575px;
+    height: 70%;
+	width: 100%;
 	background-color:$themeGray;
     
     .message-data {
@@ -206,7 +240,7 @@ body {
       font-size: 16px;
       border-radius: 7px;
       margin-bottom: 30px;
-      width: 90%;
+      width: 40%;
       position: relative;
       
       &:after {
@@ -225,14 +259,14 @@ body {
     }
     
     .my-message {
-      background: $blue;
+      background: $themeGreen;
     }
     
     .other-message {
-      background: $green;
+      background: lighten($themeDarkBlue, 15%);
       
       &:after {
-        border-bottom-color: $green;
+        border-bottom-color: $themeGreen;
         left: 93%;
       }
     }
@@ -242,9 +276,12 @@ body {
   .chat-message {
     padding: 30px;
     background: $themeDarkBlue;
+	height:20%;
     
     textarea {
       width: 100%;
+	  height:100%;
+	  margin-top: -15px;
       border: none;
       background: $themeGray;
       color: white;      
@@ -258,27 +295,94 @@ body {
     
     .fa-file-o, .fa-file-image-o {
       font-size: 16px;
-      color: $blue;
+      color: $themeGreen;
       cursor: pointer;
       
+	  &:hover {
+        color: lighten($themeGreen, 7%);
+      }
     }
     
     button {
       float: right;
-      color: $blue;
+      color: $themeGreen;
       font-size: 16px;
       text-transform: uppercase;
       border: none;
       cursor: pointer;
       font-weight: bold;
-      background: #333;
+	  background: $themeDarkBlue;
       
       &:hover {
-        color: darken($blue, 7%);
+        color: lighten($themeGreen, 7%);
       }
     }
   }
 
+}
+
+
+#catalog-search input 
+{
+	color: black;
+}
+
+.search > input, .search > i {
+	display: inline-block;
+}
+
+.list li
+{
+	height: 50px;
+}
+
+
+// SEARCH BAR
+
+@font-face {
+	font-family: Lobster;
+	src: url(../lib/Lobster.ttf);
+}
+
+//body { padding-top: 50px; }
+
+.tt-input,
+.tt-hint {
+	background-color: transparent !important;
+	border: none;
+	height: 100%;
+	padding: 12px 12px 0px;
+	font-size: 20px;
+	color: white;
+	line-height: 30px;
+	outline: none;
+}
+
+.tt-input:focus,
+.tt-hint:focus {
+	border-bottom: 2px solid #ccc;
+} 
+
+.tt-hint {
+	color: #999;
+} 
+
+.tt-menu {
+	color: black;
+	width: 422px;
+	margin-top: 12px;
+	padding: 8px 0;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+	padding: 3px 20px;
+	font-size: 18px;
+	line-height: 24px;
 }
 
 // SEARCH & CLASSES
@@ -559,8 +663,23 @@ ul
     list-style-type: none;
 }
 
-html, body, .ng-scope, .container-fluid{
+.vert
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+html, body, .container-fluid{
   height: 100%;
   width: 100%;
   margin: 0;
+}
+
+.imageMessage {
+  max-width: 350px;
+  max-height: 400px;
+  cursor: hand;
+  cursor: pointer;
 }

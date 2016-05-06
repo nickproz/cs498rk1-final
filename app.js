@@ -6,12 +6,20 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var router = express.Router();
 
+
 var User = require('./models/user');
 var Class = require('./models/class');
 
 // Connect to our MLab database
 mongoose.connect('mongodb://nickproz:bearsrock@ds033897.mlab.com:33897/cs498rk1-final');
 var db = mongoose.connection;
+
+require('goodgoodstudy-server')({
+    uploadPath: __dirname + '/uploads',
+    port: 12345,
+    mongoose: mongoose,
+    dbconn: db
+});
 
 // Create our Express application
 var app = express();
@@ -336,4 +344,5 @@ console.log('Front-end running on port ' + frontendPort);
 
 var frontend = express();
 frontend.use(express.static(__dirname + '/public'));
+console.log('trying to start frontend on ' + frontendPort);
 frontend.listen(frontendPort);

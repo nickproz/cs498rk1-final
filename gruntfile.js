@@ -30,6 +30,14 @@ module.exports = function(grunt) {
             src    : [
               '**/*.js'
             ]
+      },
+      chat_service: {
+        files: [{
+          cwd: 'node_modules/goodgoodstudy-server/client/',
+          src: 'chatservice.js',
+          dest: 'public/chat_lib/',
+          expand: true
+        }]
       }
     },
     compass: {
@@ -74,5 +82,5 @@ module.exports = function(grunt) {
       }
   }
   }) //initConfig
-  grunt.registerTask('default', ['clean',  'uglify', 'express:dev', 'watch']);
+  grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'express:dev', 'watch']);
 } //exports

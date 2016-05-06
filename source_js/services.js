@@ -1,34 +1,34 @@
 var finalServices = angular.module('finalServices', []);
 
 // Service for our User API requests
-finalServices.factory('Users', function($http, $window) {
-
-	//var baseUrl = $window.sessionStorage.baseurl + '/api/users/';
-	var baseUrl = 'http://localhost:4000/api/users/';
+finalServices.factory('Users', ['$http', '$window', '$location', function($http, $window, $location) {
+	function getBaseUrl() {
+		return 'http://' + window.location.hostname + ':4000/api/users/';
+	}
 
 	// Route to correct HTTP API call
     return {
 
 		createUser : function(user) {
-			return $http.post(baseUrl, user);
+			return $http.post(getBaseUrl(), user);
         },
 		getUsers : function(query) {
 			if(query === undefined || query === "undefined")
-				return $http.get(baseUrl);
+				return $http.get(getBaseUrl());
 			else
-				return $http.get(baseUrl + query);
+				return $http.get(getBaseUrl() + query);
 		},
 		getUser : function(id) {
-			return $http.get(baseUrl + id);
+			return $http.get(getBaseUrl() + id);
 		},
 		updateUser : function(user, id) {
-			return $http.put(baseUrl + id, user);
+			return $http.put(getBaseUrl() + id, user);
 		},
 		deleteUser : function(id) {
-			return $http.delete(baseUrl + id);
+			return $http.delete(getBaseUrl() + id);
 		}
     }
-});
+}]);
 
 // Auth service
 finalServices.factory('auth', ['$http', '$window',
@@ -85,30 +85,30 @@ function($http, $window) {
 
 // Service for our Class API requests
 finalServices.factory('Classes', function($http, $window) {
-
-	//var baseUrl = $window.sessionStorage.baseurl + '/api/classes/';
-	var baseUrl = 'http://localhost:4000/api/classes/';
+	function getBaseUrl() {
+		return 'http://' + window.location.hostname + ':4000/api/classes/';
+	}
 
 	// Route to correct HTTP API call
 	return {
 
 		createClass : function(newClass) {
-			return $http.post(baseUrl, newClass);
+			return $http.post(getBaseUrl(), newClass);
 		},
 		getClasses : function (query) {
 			if(query === undefined || query === "undefined")
-				return $http.get(baseUrl);
+				return $http.get(getBaseUrl());
 			else
-				return $http.get(baseUrl + query);
+				return $http.get(getBaseUrl() + query);
 		},
 		getClass : function(id) {
-			return $http.get(baseUrl + id);
+			return $http.get(getBaseUrl() + id);
 		},
 		updateClass : function(newClass, id) {
-			return $http.put(baseUrl + id, task);
+			return $http.put(getBaseUrl() + id, task);
 		},
 		deleteClass : function(id) {
-			return $http.delete(baseUrl + id);
+			return $http.delete(getBaseUrl() + id);
 		}
 	}
 });

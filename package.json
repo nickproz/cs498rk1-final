@@ -25,6 +25,7 @@
     "mongoose": "~4.4.14",
     "body-parser": "~1.15.0",
     "cookie-parser": "~1.4.1",
-    "jsonwebtoken": "~6.2.0"
+    "jsonwebtoken": "~6.2.0",
+    "goodgoodstudy-server": "git+https://github.com/yxcmax/cs498rk-final-chat.git"
   }
 }

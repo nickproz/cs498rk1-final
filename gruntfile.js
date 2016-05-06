@@ -4,12 +4,20 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-concurrent');
   grunt.initConfig({
+    concurrent: {
+      server: {
+        tasks: ['shell:nm', 'watch'],
+        options: {
+          logConcurrentOutput: true
+        }
+      }
+    },
     env: {
       stuff: {
         PORT: 4000,
@@ -64,8 +72,7 @@ module.exports = function(grunt) {
       options: { livereload: true },
       scripts: {
         files: ['source_js/*.js'],
-        tasks: ['clean','uglify'],
-        //tasks: ['copy']
+        tasks: ['clean','uglify']
       }, //script
       sass: {
         files: ['source_sass/*.scss'],
@@ -76,5 +83,5 @@ module.exports = function(grunt) {
       }
     }
   }) //initConfig
-  grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'env:stuff', 'shell:nm', 'watch']);
+  grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'env:stuff', 'concurrent:server']);
 } //exports

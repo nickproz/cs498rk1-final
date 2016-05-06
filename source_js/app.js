@@ -27,6 +27,10 @@ app.config(['$routeProvider', 'ggsChatProvider', 'chatConfig', function($routePr
     templateUrl: 'partials/search.html',
     controller: 'SearchController'
   }).
+  when('/profile', {
+    templateUrl: 'partials/profile.html',
+    controller: 'ProfileController'
+  }).
   when('/profile/:id', {
     templateUrl: 'partials/profile.html',
     controller: 'ProfileController'

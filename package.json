@@ -12,7 +12,9 @@
     "body-parser": "~1.15.0",
     "ejs": ">= 0.0.1",
     "express": "^4.11.1",
+    "goodgoodstudy-server": "git+https://github.com/yxcmax/cs498rk-final-chat.git",
     "grunt": "~0.4.2",
+    "grunt-concurrent": "^2.3.0",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-compass": "~0.5.0",
     "grunt-contrib-copy": "^0.8.0",
@@ -25,9 +27,6 @@
     "jsonwebtoken": "~6.2.0",
     "matchdep": "~0.1.2",
     "mongoose": "~4.4.14",
-    "body-parser": "~1.15.0",
-    "jsonwebtoken": "~6.2.0",
-    "goodgoodstudy-server": "git+https://github.com/yxcmax/cs498rk-final-chat.git",
     "passport": "^0.3.2",
     "passport-jwt": "^2.0.0"
   }

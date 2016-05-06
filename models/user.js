@@ -45,12 +45,12 @@ UserSchema.methods.generateJWT = function() {
 
 UserSchema.methods.setPassword = function(password){
   this.salt = crypto.randomBytes(16).toString('base64');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+  this.hashPass = crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
 };
 
 UserSchema.methods.validPassword = function(password) {
   var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
-  return this.hash === hash;
+  return this.hashPass === hash;
 };
 
 UserSchema.pre('save', function(next) {

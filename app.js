@@ -32,7 +32,7 @@ var port = process.env.PORT || 4000;
 //Allow CORS so that backend and frontend can be put on different servers
 var allowCrossDomain = function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
     // Intercept OPTIONS method
@@ -79,9 +79,9 @@ function JWTAuthMiddleware(req, res, next) {
     passport.authenticate('jwt', {session: false}, function(err, user, info) {
         if (err) return next(err);
         if (user)
-            req.loggedInUser = user;
+            req.user = user;
         else
-            req.loggedInUser = false;
+            req.user = false;
         return next();
     })(req, res, next);
 }
@@ -90,7 +90,7 @@ function JWTAuthMiddleware(req, res, next) {
 app.use('/api', JWTAuthMiddleware, router);
 
 function onlyAllowLoggedInUsers(req, res, next) {
-    if (!req.loggedInUser)
+    if (!req.user)
         return res.status(401).json({code: -1, message: "You're not logged in!", data: []});
     return next();
 }
@@ -100,14 +100,32 @@ var homeRoute = router.route('/');
 
 // Hello World!
 homeRoute.get(function(req, res) {
-  res.json({ loggedInUser: req.loggedInUser });
+  res.json({ loggedInUser: req.user });
+});
+
+// Authentication
+var loginRoute = router.route('/login');
+loginRoute.post(function(req, res, next) {
+    var email = req.body.email;
+    var password = req.body.password;
+    User.findOne({email: email}, function(err, data) {
+        if (err)
+            return res.status(500).json({code: -1, message: "Something went wrong! validate your input please", data: err});
+        if (!data)
+            return res.status(400).json({code: -1, message: "The email supplied does not exist!", data: err});
+        if (data.validPassword(password))
+            return res.json({token: data.generateJWT()});
+        console.log(data.email);
+        console.log(data.password);
+        return res.status(400).json({code: -1, message: "The credentials supplied do not match!", data: err});
+    });
 });
 
 // User routes
 var usersRoute = router.route('/users');
 
 usersRoute.post(function(req, res) {
-    if (req.loggedInUser)
+    if (req.user)
         return res.status(400).json({code: -1, message: "You're already logged in!", data: []});
 
     var user = new User();
@@ -374,6 +392,5 @@ console.log('Server running on port ' + port);
 
 var frontend = express();
 frontend.use(express.static(__dirname + '/public'));
-console.log('trying to start frontend on ' + frontendPort);
 frontend.listen(frontendPort);
 console.log('Front-end running on port ' + frontendPort);

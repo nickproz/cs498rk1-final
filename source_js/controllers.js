@@ -337,7 +337,7 @@ finalControllers.controller('ProfileController', ['$scope' , '$http', '$window',
 		return $location.path('/login');
 	}
 	$scope.id = $routeParams.id || Auth.currentUser()._id;
-
+	$scope.own = $scope.id == Auth.currentUser()._id;
 	// Get class data, add courses to search bar typeahead
 	Users.getUser($scope.id).success(function(data) {
 		$scope.user = data.data;

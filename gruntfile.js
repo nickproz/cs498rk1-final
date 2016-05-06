@@ -27,6 +27,9 @@ module.exports = function(grunt) {
     shell: {
       nm: {
         command: 'nodemon --watch app.js --watch models/ -L app.js'
+      },
+      prod: {
+        command: 'node app.js'
       }
     },
     clean: ["public/js"],
@@ -84,4 +87,5 @@ module.exports = function(grunt) {
     }
   }) //initConfig
   grunt.registerTask('default', ['clean', 'copy:chat_service', 'uglify', 'env:stuff', 'concurrent:server']);
+  grunt.registerTask('prod', ['compass', 'clean', 'copy:chat_service', 'uglify', 'env:stuff', 'shell:prod']);
 } //exports

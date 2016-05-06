@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
-
+var express = require('express');
+var passport = require('passport');
+var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 // Configure Express
-var express = require('./config/express');
 var app = express();
 
 var router = express.Router();
@@ -13,7 +17,7 @@ var Class = require('./models/class');
 mongoose.connect('mongodb://nickproz:bearsrock@ds033897.mlab.com:33897/cs498rk1-final');
 var db = mongoose.connection;
 
-require('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+ // ('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // Use environment defined port or 4000
 var frontendPort = process.env.FRONTENDPORT || 3000;

@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 var passport = require('passport'),
     User = require('mongoose').model('User');
 
@@ -17,9 +16,34 @@ module.exports = function() {
         });
     });
 
-    // Initialize strategies
-    require('./strategies/local.js')();
-    require('./strategies/facebook.js')();
+
+var LocalStrategy = require('passport-local').Strategy;
+module.exports = function() {
+    // Use local strategy
+    passport.use(new LocalStrategy(function(username, password, done) {
+        User.findOne({
+            username: username
+        }, function(err, user) {
+            // When an error occurred
+            if (err) {
+                return done(err);
+            }
+
+            // When user not found
+            if (!user) {
+                return done(null, false, {
+                    message: 'Unknown user'
+                });
+            }
+
+            // When the password is invalid
+            if (!user.authenticate(password)) {
+                return done(null, false, {
+                    message: 'Invalid password'
+                });
+            }
+
+            return done(null, user);
+        });
+    }));
 };
-=======
->>>>>>> Stashed changes

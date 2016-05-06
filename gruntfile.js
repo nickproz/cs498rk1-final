@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-concurrent');
+  var frontendPort = parseInt(grunt.option('fport')) || 3000;
   grunt.initConfig({
     concurrent: {
       server: {
@@ -21,7 +22,8 @@ module.exports = function(grunt) {
     env: {
       stuff: {
         PORT: 4000,
-        JWT_SECRET: 'LMAOTHISSECRETISEASYTOGUESS'
+        JWT_SECRET: 'LMAOTHISSECRETISEASYTOGUESS',
+        FRONTENDPORT: frontendPort
       }
     },
     shell: {

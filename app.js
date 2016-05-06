@@ -115,8 +115,6 @@ loginRoute.post(function(req, res, next) {
             return res.status(400).json({code: -1, message: "The email supplied does not exist!", data: err});
         if (data.validPassword(password))
             return res.json({token: data.generateJWT()});
-        console.log(data.email);
-        console.log(data.password);
         return res.status(400).json({code: -1, message: "The credentials supplied do not match!", data: err});
     });
 });

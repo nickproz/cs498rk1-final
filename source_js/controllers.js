@@ -120,7 +120,7 @@ finalControllers.controller('LoginController', ['$scope' , '$http', '$window', '
 		e.preventDefault();
 		$scope.showError = false;
 		Auth.logIn({email: $scope.emInput, password: $scope.pwInput}, function() {
-			$location.path('/search');
+			$location.path('/profile');
 		}, function(err) {
 			$scope.showError = true;
 			$scope.userFail = err.message;
@@ -281,6 +281,9 @@ finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '
 	// Navbar update
 	$('.navbar li').removeClass('active');
 	
+	$scope.showError = false;
+	$scope.showSuccess = false;
+	
 	// Route parameters
 	$scope.id = $routeParams.id;
 	$scope.classRoute = $routeParams.class;
@@ -312,14 +315,20 @@ finalControllers.controller('ClassController', ['$scope' , '$http', '$window', '
 		if (!Auth.isLoggedIn()) {
 			return $location.path('/login');
 		}
-		if($scope.user.classes.indexOf($scope.currClass.id))
+		if($scope.user.classes.indexOf($scope.currClass.id) === -1) {
 			$scope.user.classes.push($scope.currClass.id)
-		Users.updateUser($scope.user, $scope.user._id).success(function(data) {
-			$scope.user = data.data;
-		}).error(function (err) {
-			console.log(err);
-		})
-		
+			Users.updateUser($scope.user, $scope.user._id).success(function(data) {
+				$scope.user = data.data;
+				$scope.showError = false;
+				$scope.showSuccess = true;
+			}).error(function (err) {
+				console.log(err);
+			})
+		}
+		else {
+			$scope.showSuccess = false;
+			$scope.showError = true;
+		}
 	}
 }]);
 
@@ -368,7 +377,7 @@ finalControllers.controller('ProfileController', ['$scope' , '$http', '$window',
 	
 }]);
 
-finalControllers.controller('navbarController', ['$scope', 'Users', 'Auth', function($scope, Users, Auth) {
+finalControllers.controller('navbarController', ['$scope', '$location', 'Users', 'Auth', function($scope, $location, Users, Auth) {
 	$scope.isLoggedIn = false;
 	updateView();
 	$scope.$on('userLogin', function(event, args) {
@@ -377,6 +386,7 @@ finalControllers.controller('navbarController', ['$scope', 'Users', 'Auth', func
 	$scope.logout = function() {
 		Auth.logOut();
 		updateView();
+		$location.path('/login');
 	};
 	function updateView() {
 		if (Auth.isLoggedIn()) {

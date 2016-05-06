@@ -40,8 +40,8 @@
 		  <ul class="nav navbar-nav navbar-right" ng-controller="navbarController">
 			<li ng-if="!isLoggedIn" id="navSignup"><a href="#/signup">Sign Up</a></li>
 			<li ng-if="!isLoggedIn" id="navLogin"><a href="#/login">Log In</a></li>
-			<p ng-if="isLoggedIn" class="navbar-text">Hello {{firstName}}!</p>
-			<li ng-if="isLoggedIn"><p style="color: red; cursor: hand; cursor: pointer;" class="navbar-text" ng-click="logout()">Log out</p></li>
+			<li ng-if="isLoggedIn"><a href="#/profile">Hello {{firstName}}! </a></li>
+			<li ng-if="isLoggedIn" ng-click="logout()"><a style="color: red; cursor: hand; cursor: pointer"> Log out </a></li>
 		  </ul>
 	  </div>
 	</nav>

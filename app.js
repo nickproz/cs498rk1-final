@@ -215,7 +215,7 @@ userDetailsRoute.put(onlyAllowLoggedInUsers, function(req, res) {
     var user = req.body;
 	console.log(user);
 	
-    if(user.firstName === "undefined" || user.lastName === "undefined" || user.username === "undefined" || user.email === "undefined" || user.password === "undefined" || user.firstName === undefined || user.lastName === undefined || user.username === undefined || user.email === undefined || user.password === undefined) {
+    if(user.firstName === "undefined" || user.lastName === "undefined" || user.userName === "undefined" || user.email === "undefined" || user.firstName === undefined || user.lastName === undefined || user.userName === undefined || user.email === undefined) {
         return res.status(500).send({ 'message': 'Please fill out all fields with valid characters.', 'data': [] });
     }
 

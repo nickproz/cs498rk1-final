@@ -28,6 +28,16 @@ float: right!important;
 
 .navbar ul {
 	margin:0px 10px;
+	//display:inline-block;
+}
+
+.navbar a {
+	padding: 10px;
+}
+
+.navbar li
+{
+	padding: 0px;
 }
 
 @media only screen and (max-width: 640px) {
@@ -423,9 +433,20 @@ body {
 
 
 // SIGNUP/LOGIN
-#userFail, #userSuccess
+#userFail, #userSuccess, #enrollSuccess, #enrollFail
 {
 	margin: 30px;
+}
+
+#enrollSuccess, #enrollFail
+{
+	width: 20%;
+	margin: 0 auto;
+}
+
+.navbar a
+{
+	text-decoration: none;
 }
 
 *, *:before, *:after {

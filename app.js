@@ -1,9 +1,8 @@
-// Get the packages we need
-var express  = require('express');
-var app      = express();
 var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
+
+// Configure Express
+var express = require('./config/express');
+var app = express();
 
 var router = express.Router();
 
@@ -13,15 +12,6 @@ var Class = require('./models/class');
 // Connect to our MLab database
 mongoose.connect('mongodb://nickproz:bearsrock@ds033897.mlab.com:33897/cs498rk1-final');
 var db = mongoose.connection;
-
-app.use(express.cookieParser()); // read cookies (needed for auth)
-app.use(express.bodyParser()); // get information from html forms
-
-// required for passport
-app.use(express.session({ secret: 'SECRET' })); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

@@ -1,39 +1,63 @@
-// server.js
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-// set up ======================================================================
-// get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
+// Requiring dependencies
 var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
 
-var configDB = require('./config/database.js');
+// Configure Mongoose
+var db = mongoose.connect('mongodb://localhost/mean-passport');
 
-// configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
-
-require('./config/passport')(passport); // pass passport for configuration
-
-app.configure(function() {
-
-    // set up our express application
-    app.use(express.logger('dev')); // log every request to the console
-    app.use(express.cookieParser()); // read cookies (needed for auth)
-    app.use(express.bodyParser()); // get information from html forms
-
-    // required for passport
-    app.use(express.session({ secret: 'SECRET' })); // session secret
-    app.use(passport.initialize());
-    app.use(passport.session()); // persistent login sessions
-    app.use(flash()); // use connect-flash for flash messages stored in session
-
+require('goodgoodstudy-server')({
+    uploadPath: __dirname + '/uploads',
+    port: 12345,
+    mongoose: mongoose,
+    dbconn: db
 });
 
-// routes ======================================================================
-require('./source_js/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+// Configure Express
+var express = require('./config/express');
+var app = express();
 
-// launch ======================================================================
-app.listen(port);
-console.log('The magic happens on port ' + port);
+var frontendPort = process.env.FRONTENDPORT || 3000;
+var port = process.env.PORT || 4000;
+
+// Bootstrap passport config
+var passport = require('./config/passport')();
+
+/Allow CORS so that backend and frontend can be put on different servers
+var allowCrossDomain = function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+
+    // Intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.sendStatus(200);
+    }
+    else {
+      next();
+    }
+};
+
+app.use(allowCrossDomain);
+
+// Use the body-parser package in our application
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+
+// Allow req to access our database
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
+
+// All our routes will start with /api
+app.use('/api', router);
+
+// Bootstrap application
+app.listen(3000);
+
+// Tell developer about it
+console.log('Server running at http://localhost:3000/');
